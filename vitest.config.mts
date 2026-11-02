@@ -11,6 +11,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     // Only pure TypeScript modules: nothing here may import React Native.
-    include: ['supabase/functions/_shared/core/**/*.test.ts', 'src/**/*.test.ts'],
+    include: [
+      'supabase/functions/_shared/core/**/*.test.ts',
+      'src/**/*.test.ts',
+      'prompts/**/*.test.ts',
+    ],
   },
 });

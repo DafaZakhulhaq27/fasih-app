@@ -113,7 +113,7 @@ Keputusan:
 ## Langkah 6 — Feedback v1 dan eval pertama
 
 - [x] Schema Zod untuk feedback di `_shared/core`, sesuai bagian "Schema feedback" di `docs/plan.md`. (Dikerjakan lebih dulu sambil menunggu Langkah 0, atas persetujuan pemilik.)
-- [ ] Prompt `prompts/feedback.v1.md`: rubrik Writing Task 2 ditulis dengan kata-kata sendiri, bukan salinan band descriptors.
+- [x] Prompt `prompts/feedback.v1.md`: rubrik Writing Task 2 ditulis dengan kata-kata sendiri, bukan salinan band descriptors. (Dikerjakan lebih dulu sambil menunggu Langkah 0.)
 - [ ] Edge Function `feedback-writing` dengan structured output, validasi Zod, guard halusinasi (koreksi yang `original`-nya tidak ada di input dibuang), dan log ke `ai_calls`.
 - [ ] Runner eval (`npm run eval`) dengan 20 item awal: essay sendiri yang dianotasi manual dan kalimat yang benar. Contoh berband resmi hanya di `eval/private/`.
 
@@ -130,6 +130,12 @@ Keputusan (schema dan guard):
   - Kriteria yang bukan milik tugasnya dibuang. Writing dinilai dengan task, coherence, lexical, grammar; Speaking dengan fluency, lexical, grammar, pronunciation. Kriteria yang tidak dinilai dilaporkan di `missingCriteria`.
   - Semua yang dibuang dikembalikan di `dropped` agar dicatat pemanggil (Edge Function).
 - **"Persis" berarti substring yang sama**, kecuali beda akhir baris (`\r\n` vs `\n`) yang dianggap sama. Untuk `evidence`, tanda petik dan spasi di tepi kutipan dibuang dulu (model sering membungkus kutipan), tapi isinya tetap harus sama persis. Batas "maksimal 2 kalimat" belum diperiksa di kode.
+- **Prompt v1** (`prompts/feedback.v1.md`):
+  - Rubrik band 5–8 untuk task, coherence, lexical dan grammar ditulis sebagai ciri yang bisa diamati di esai, dengan kata-kata sendiri. Tautannya ke deskriptor resmi di ielts.org, bukan salinan.
+  - Model diminta mengutip bukti sebelum memberi band, menandai hanya yang akan disadari native speaker, memberi maksimal 5 koreksi urut dampak, tidak menghitung apa pun (jumlah kata dari app), dan mengabaikan instruksi di dalam teks siswa.
+  - Penjelasan memakai bahasa pilihan pengguna (`explain_lang`), sedangkan koreksi dan versi perbaikan tetap berbahasa Inggris.
+  - Template diisi oleh `renderFeedbackPrompt` di core; versinya (`feedback.v1`) disimpan di tiap baris `feedback`. Cara Edge Function membaca file `.md` ini diputuskan saat function-nya dibuat.
+  - Prompt ini belum pernah dicoba ke model; kualitasnya baru terukur lewat eval setelah API key Gemini ada.
 - **Import relatif di `_shared/core` memakai ekstensi `.ts`** supaya bisa dipakai Deno tanpa diubah (`allowImportingTsExtensions` di `tsconfig.json`).
 
 ## Langkah 7 — Cek TTS untuk Listening
