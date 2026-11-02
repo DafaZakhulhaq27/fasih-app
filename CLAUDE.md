@@ -80,11 +80,14 @@ Node 22.13 or newer (see `.nvmrc`). Install with `npm ci`; add Expo packages wit
 | Unit tests | `npm test` | Vitest, once; `npm run test:watch` to watch |
 | Dependency check | `npx expo-doctor` | Expo package versions vs SDK 58 |
 | Web build | `npx expo export -p web` | Static SPA in `dist/` (`web.output: single`) |
-| Local Supabase | `supabase start` | Set up in Fase 0 step 2; needs the Supabase CLI and Docker |
-| Edge Functions | `supabase functions serve` | Set up in Fase 0 step 5 |
+| Local Supabase | `npm run db:start` / `npm run db:stop` | Needs Docker (OrbStack on this Mac). The CLI is a dev dependency: run it as `npx supabase`. Studio at http://127.0.0.1:54323 |
+| New migration | `npx supabase migration new <name>` | SQL files in `supabase/migrations/` |
+| Reset database | `npm run db:reset` | Re-applies every migration and `supabase/seed.sql` |
+| RLS tests | `npm run db:test` | pgTAP files in `supabase/tests/`; needs the local stack running |
+| Edge Functions | `npx supabase functions serve` | Set up in Fase 0 step 5 |
 | Web deploy | `npx expo export -p web && eas deploy` | Set up in Fase 0 step 4 |
 
-CI (`.github/workflows/ci.yml`) runs typecheck, lint and unit tests on every push and pull request.
+CI (`.github/workflows/ci.yml`) runs typecheck, lint and unit tests, and in a second job starts Supabase, resets the database twice and runs the RLS tests, on every push and pull request.
 
 ## Working with the owner
 
