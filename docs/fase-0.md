@@ -66,13 +66,30 @@ Keputusan:
 
 ## Langkah 3 — Login Google
 
-- [ ] Web: `signInWithOAuth` dengan PKCE.
+- [ ] Web: `signInWithOAuth` dengan PKCE. Kode siap dan diuji lokal sampai redirect ke `/auth/v1/authorize` (provider `google`, PKCE `s256`, kembali ke `/sign-in`). Login penuh menunggu OAuth client Google dari Langkah 0.
 - [ ] Android: `@react-native-google-signin/google-signin` lalu `supabase.auth.signInWithIdToken`. Ini butuh development build, tidak jalan di Expo Go.
-- [ ] Sesi tersimpan aman di perangkat dan tetap ada setelah app ditutup.
-- [ ] Pendaftaran hanya lewat undangan: hook "Before User Created" yang mengecek `allowed_emails`. Cek dulu apakah hook ini tersedia di free plan. Jika tidak, matikan pendaftaran publik dan catat keputusannya di sini.
-- [ ] Layar Sign in sesuai `docs/design/screens/01-signin.png`, memakai tombol resmi Google.
+- [ ] Sesi tersimpan aman di perangkat dan tetap ada setelah app ditutup. Web terbukti (sesi bertahan setelah reload, sign out menghapusnya). Native memakai `LargeSecureStore`, belum diuji di perangkat.
+- [x] Pendaftaran hanya lewat undangan: hook "Before User Created" yang mengecek `allowed_emails`. Cek dulu apakah hook ini tersedia di free plan. Jika tidak, matikan pendaftaran publik dan catat keputusannya di sini.
+- [ ] Layar Sign in sesuai `docs/design/screens/01-signin.png`, memakai tombol resmi Google. Tata letak sudah sesuai desain; aset tombol resmi Google belum dipasang.
 
 **Selesai jika:** login berhasil di web dan Android, email di luar daftar undangan ditolak, dan keluar-masuk app tidak meminta login ulang.
+
+- [x] Email di luar daftar undangan ditolak (sign-up lewat Auth lokal: email undangan dibuat, email lain ditolak 403 dengan pesan yang jelas).
+- [ ] Login berhasil di web dan Android.
+- [ ] Keluar-masuk app tidak meminta login ulang (web sudah; Android menunggu development build).
+
+Keputusan:
+
+- **Hook "Before User Created" tersedia di Free plan** (tabel ketersediaan di docs Auth Hooks), jadi pendaftaran publik tidak perlu dimatikan. Fungsinya `private.before_user_created`, diaktifkan lokal lewat `[auth.hook.before_user_created]` di `supabase/config.toml`. **Di project hosted, hook harus diaktifkan juga di Dashboard → Authentication → Hooks** (atau `supabase config push`).
+- **Hook tanpa `security definer`**, sesuai saran docs: `supabase_auth_admin` diberi `execute` pada fungsi, `usage` pada schema `private` dan `public`, `select` pada `allowed_emails`, plus policy RLS khusus role itu. App (`anon`, `authenticated`) tidak bisa memanggil hook.
+- **Email tanpa undangan ditolak dengan 403** dan pesan "Fasih is invite-only for now…". Di web, Supabase mengembalikan pesan itu ke `/sign-in?error_description=…` dan layar Sign in menampilkannya.
+- **Sesi:** web memakai `localStorage` (bawaan supabase-js). Android/iOS memakai `LargeSecureStore` dari tutorial Expo Supabase: kunci AES-256 acak per penulisan di SecureStore, ciphertext di AsyncStorage, karena SecureStore hanya menampung sekitar 2 KB per nilai.
+- **Route guard** memakai `Stack.Protected` Expo Router: `/` hanya untuk yang login, `/sign-in` hanya untuk yang belum. Splash screen bertahan sampai font dan sesi selesai dimuat.
+- **Env divalidasi dengan Zod** (`src/lib/env.ts`); pesan error menyebut variabel yang kosong. Untuk dev lokal, `.env.local` diisi URL dan publishable key Supabase lokal.
+- **Tipe database di-generate** ke `src/lib/database.types.ts` (`npm run db:types`); CI gagal jika file ini tidak cocok dengan migrasi.
+- **Login Google di Android belum dipasang.** Modul native-nya butuh development build dan OAuth client Android, jadi `google-sign-in.native.ts` untuk sementara hanya menampilkan pesan "pakai versi web dulu".
+- **Tombol "Sign out" sementara ada di layar placeholder Today**, untuk menguji alur keluar-masuk. Nanti pindah ke Account.
+- **Link "Privacy policy" dari desain belum dipasang**, karena halaman kebijakan privasinya belum ada.
 
 ## Langkah 4 — Deploy gratis
 
