@@ -18,14 +18,14 @@ Semua secret disimpan di `.env.local` (tidak di-commit) atau lewat `supabase sec
 - [x] Expo SDK 58 + Expo Router + TypeScript strict di root repo. Gabungkan `.gitignore` bawaan Expo dengan `.gitignore` yang sudah ada.
 - [x] ESLint + Prettier, Vitest, path alias `@core/*` ke `supabase/functions/_shared/core/*`.
 - [x] Token desain dari `docs/design/README.md` sebagai satu modul `src/theme`, plus font Atkinson Hyperlegible dan Kalam.
-- [ ] GitHub Actions: typecheck, lint, unit test di setiap push dan PR. Workflow sudah ditulis; dicentang setelah run pertamanya hijau.
+- [x] GitHub Actions: typecheck, lint, unit test di setiap push dan PR.
 - [x] Isi bagian **Commands** di `CLAUDE.md`.
 
 **Selesai jika:** app tampil di web dan di Android (Expo Go cukup untuk langkah ini), dan CI hijau.
 
 - [x] App tampil di web (dev server dan `npx expo export -p web`).
 - [ ] App tampil di Android. Ditunda karena belum ada HP atau emulator; `npx expo export -p android` sudah berhasil membuat bundle.
-- [ ] CI hijau.
+- [x] CI hijau (PR #1).
 
 Keputusan:
 

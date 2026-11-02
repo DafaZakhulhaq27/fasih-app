@@ -73,7 +73,7 @@ Node 22.13 or newer (see `.nvmrc`). Install with `npm ci`; add Expo packages wit
 | --- | --- | --- |
 | Dev server | `npm start` | Metro + QR code for Expo Go or a development build |
 | Web | `npm run web` | http://localhost:8081 |
-| Android | `npm run android` | Needs a device (USB debugging) or an emulator; installs the matching Expo Go via adb |
+| Android | `npm run android` | Needs a device (USB debugging) or an emulator with an Expo Go that supports SDK 58 |
 | Typecheck | `npm run typecheck` | `tsc --noEmit` |
 | Lint | `npm run lint` | `expo lint --max-warnings 0` (ESLint 9 + Prettier) |
 | Format | `npm run format` | `npm run format:check` to check only; Markdown and `docs/` are skipped |

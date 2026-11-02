@@ -12,6 +12,9 @@ export default function RootLayout(): ReactElement | null {
   const [loaded, error] = useFonts(fontAssets);
 
   useEffect(() => {
+    if (error) {
+      console.warn('Fonts failed to load; falling back to the system font.', error);
+    }
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
