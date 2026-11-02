@@ -1,6 +1,6 @@
 -- Row level security: user A must not read or write user B's rows, and users cannot raise their own privileges.
 begin;
-select plan(26);
+select plan(29);
 
 -- Two users. The auth trigger creates their profiles.
 insert into auth.users (id, email, raw_user_meta_data, aud, role)
@@ -75,6 +75,11 @@ select throws_ok(
 );
 
 select lives_ok(
+  $$ delete from public.allowed_emails where email = 'dev@example.test' $$,
+  'A delete of an invite by a non-admin runs but matches no rows'
+);
+
+select lives_ok(
   $$ insert into public.exam_plans (id, target_band) values ('cccccccc-0000-4000-8000-00000000000c', 7.0) $$,
   'A adds their own exam plan'
 );
@@ -144,6 +149,11 @@ select is(
   'A''s plan was neither changed nor deleted by B'
 );
 
+select ok(
+  exists (select 1 from public.allowed_emails where email = 'dev@example.test'),
+  'The seeded invite survived the non-admin delete'
+);
+
 -- A as admin ----------------------------------------------------------------
 update public.profiles set role = 'admin' where id = 'aaaaaaaa-0000-4000-8000-00000000000a';
 
@@ -164,6 +174,12 @@ select throws_ok(
   $$ insert into public.allowed_emails (email, invited_by) values ('other@example.test', 'bbbbbbbb-0000-4000-8000-00000000000b') $$,
   '42501', null,
   'An admin cannot invite in someone else''s name'
+);
+
+select results_eq(
+  $$ delete from public.allowed_emails where email = 'friend@example.test' returning email $$,
+  $$ values ('friend@example.test'::text) $$,
+  'An admin can remove an invite'
 );
 
 -- Deleting an account -------------------------------------------------------

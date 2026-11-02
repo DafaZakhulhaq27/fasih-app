@@ -26,13 +26,20 @@ select is_empty(
   'Every foreign key to auth.users cascades on delete'
 );
 
+-- has_*_privilege also sees column-level grants, which information_schema.role_table_grants does not.
 select is_empty(
   $$
-    select table_name || ': ' || privilege_type
-    from information_schema.role_table_grants
-    where grantee = 'anon' and table_schema = 'public'
+    select c.relname
+    from pg_class c
+    join pg_namespace n on n.oid = c.relnamespace
+    where n.nspname = 'public'
+      and c.relkind in ('r', 'p', 'v', 'm')
+      and (
+        has_table_privilege('anon', c.oid, 'SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER')
+        or has_any_column_privilege('anon', c.oid, 'SELECT, INSERT, UPDATE, REFERENCES')
+      )
   $$,
-  'Signed-out users have no privileges on public tables'
+  'Signed-out users have no privileges on public tables or their columns'
 );
 
 select is_empty(

@@ -49,7 +49,8 @@ Keputusan:
 **Selesai jika:** `supabase db reset` bisa diulang tanpa error, dan test RLS membuktikan user A tidak bisa membaca atau mengubah baris user B.
 
 - [x] `supabase db reset` dua kali berturut-turut tanpa error (lokal dan di CI).
-- [x] 30 test pgTAP lolos. Saat policy sengaja dibocorkan di database lokal, 5 test gagal, jadi test-nya memang menangkap kebocoran.
+- [x] 33 test pgTAP lolos. Saat policy sengaja dibocorkan di database lokal, 5 test gagal; saat `anon` diberi grant satu kolom, guard schema gagal. Jadi test-nya memang menangkap kebocoran.
+- [x] Sign-up lewat Auth lokal (role `supabase_auth_admin`) membuat baris `profiles` dengan default yang benar.
 
 Keputusan:
 
