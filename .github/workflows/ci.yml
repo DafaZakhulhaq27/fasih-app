@@ -58,3 +58,6 @@ jobs:
 
       - name: RLS tests
         run: npx supabase test db
+
+      - name: Generated database types are up to date
+        run: npm run db:types && git diff --exit-code src/lib/database.types.ts

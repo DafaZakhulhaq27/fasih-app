@@ -4,33 +4,52 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, type ReactElement } from 'react';
 
+import { SessionProvider, useSession } from '@/auth/session-provider';
 import { colors, fontAssets } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout(): ReactElement | null {
-  const [loaded, error] = useFonts(fontAssets);
+export default function RootLayout(): ReactElement {
+  return (
+    <SessionProvider>
+      <StatusBar style="dark" />
+      <RootNavigator />
+    </SessionProvider>
+  );
+}
+
+function RootNavigator(): ReactElement | null {
+  const [fontsLoaded, fontError] = useFonts(fontAssets);
+  const { session, isLoading } = useSession();
+  // If a font fails to load, render anyway with the system font.
+  const ready = (fontsLoaded || fontError !== null) && !isLoading;
 
   useEffect(() => {
-    if (error) {
-      console.warn('Fonts failed to load; falling back to the system font.', error);
+    if (fontError) {
+      console.warn('Fonts failed to load; falling back to the system font.', fontError);
     }
-    if (loaded || error) {
+  }, [fontError]);
+
+  useEffect(() => {
+    if (ready) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [ready]);
 
-  // If a font fails to load, render anyway with the system font.
-  if (!loaded && !error) {
+  if (!ready) {
     return null;
   }
 
+  const signedIn = session !== null;
+
   return (
-    <>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}
-      />
-    </>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
+      <Stack.Protected guard={signedIn}>
+        <Stack.Screen name="index" />
+      </Stack.Protected>
+      <Stack.Protected guard={!signedIn}>
+        <Stack.Screen name="(auth)/sign-in" />
+      </Stack.Protected>
+    </Stack>
   );
 }
