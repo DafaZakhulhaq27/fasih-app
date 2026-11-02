@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fasih: Recording an answer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Kalam:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18233A}
+a:hover{color:#1F56C8}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #1F56C8;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7FB; color: #18233A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 0">
+    <a href="Main.dc.html" aria-label="Close and discard" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; color: #18233A">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </a>
+    <p style="margin: 0 12px 0 0; font-size: 15px; line-height: 20px; color: #4A5670">Speaking, Part 2</p>
+  </header>
+
+  <section aria-label="Cue card" style="margin: 8px 16px 0; position: relative; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 4px; padding: 14px 18px 14px 52px">
+    <div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 36px; width: 2px; background: #EBB0B6"></div>
+    <p style="margin: 0; font-size: 13px; line-height: 18px; color: #4A5670">Cue card</p>
+    <h1 style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 700">Describe a piece of technology you find useful.</h1>
+    <p style="margin: 8px 0 0; font-size: 15px; line-height: 22px">You should say:</p>
+    <ul style="margin: 2px 0 0; padding-left: 18px; font-size: 15px; line-height: 22px">
+      <li>what it is</li>
+      <li>how often you use it</li>
+      <li>what you use it for</li>
+    </ul>
+    <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px">and explain why you find it useful.</p>
+  </section>
+  <p style="margin: 12px 24px 0; font-family: Kalam, cursive; font-size: 19px; line-height: 26px; color: {{pencil}}">One minute of notes is done. Keep going until it stops.</p>
+
+  <section aria-label="Recording" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 0 24px">
+    <div style="text-align: center">
+      <p style="margin: 0; font-size: 60px; line-height: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em">0:47</p>
+      <p style="margin: 4px 0 0; font-size: 15px; line-height: 20px; color: #4A5670">of 2:00</p>
+    </div>
+    <div aria-hidden="true" style="height: 64px; display: flex; align-items: center; gap: 3px">
+      <sc-for list="{{bars}}" as="bar" hint-placeholder-count="40">
+        <span style="display: block; width: 4px; border-radius: 2px; height: {{bar.h}}px; background: {{bar.c}}"></span>
+      </sc-for>
+    </div>
+    <a href="SpeakFeedback.dc.html" aria-label="Stop recording" style="width: 96px; height: 96px; box-sizing: border-box; border-radius: 50%; border: 3px solid {{pencil}}; background: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <span aria-hidden="true" style="width: 78px; height: 78px; border-radius: 50%; background: #18233A; display: flex; align-items: center; justify-content: center">
+        <span style="width: 26px; height: 26px; border-radius: 5px; background: #FFFFFF"></span>
+      </span>
+    </a>
+    <p style="margin: -8px 0 0; font-size: 15px; line-height: 20px; color: #4A5670">Recording stops at 2:00. Tap to stop early.</p>
+  </section>
+
+  <footer style="padding: 0 24px 28px; display: flex; flex-direction: column; align-items: center; gap: 4px">
+    <button type="button" style="min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: #18233A; font-size: 15px; text-decoration: underline; text-underline-offset: 3px">Start over</button>
+    <p style="margin: 0; font-size: 13px; line-height: 18px; color: #4A5670; text-align: center">Audio is deleted after 30 days. The transcript stays.</p>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pencil":{"editor":"color","default":"#1F56C8","options":["#1F56C8","#1C7A57","#6B3FC9"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const recorded = [10, 18, 26, 14, 32, 40, 22, 12, 28, 44, 36, 18, 8, 24, 38, 30, 16, 26, 42, 34, 20, 14];
+    const bars = recorded.map(function (h) { return { h: h, c: '#18233A' }; });
+    for (let i = 0; i < 18; i++) {
+      bars.push({ h: 4, c: '#C9D6E8' });
+    }
+    return { pencil: this.props.pencil ?? '#1F56C8', bars: bars };
+  }
+}
+</script>
+</body>
+</html>

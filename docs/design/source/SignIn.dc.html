@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fasih: Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Kalam:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18233A}
+a:hover{color:#1F56C8}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #1F56C8;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7FB; color: #18233A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; padding: 72px 24px 32px">
+
+  <p style="position: relative; display: inline-block; align-self: flex-start; margin: 0; padding-bottom: 12px; font-family: Kalam, cursive; font-size: 48px; font-weight: 700; line-height: 54px; color: #18233A">Fasih<svg aria-hidden="true" width="116" height="12" viewBox="0 0 116 12" fill="none" style="position: absolute; left: 0; bottom: 2px; stroke-linecap: round; stroke-linejoin: round"><path d="M2 6c4-5 8-5 12 0s8 5 12 0 8-5 12 0 8 5 12 0" stroke="#7C8598" style="stroke-width: 2.5"></path><path d="M56 6H114" stroke="{{pencil}}" style="stroke-width: 3"></path></svg></p>
+
+  <h1 style="margin: 28px 0 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em">IELTS practice that learns from your own mistakes.</h1>
+  <p style="margin: 10px 0 0; font-size: 17px; line-height: 26px; color: #4A5670">A 12-week plan, honest band estimates, and a review deck built from what you got wrong.</p>
+
+  <figure aria-label="Example correction" style="margin: 28px 0 0; position: relative; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 4px; padding: 30px 18px 18px 60px; background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 35px, #DCE5F1 35px, #DCE5F1 36px)">
+    <span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 44px; width: 2px; background: #EBB0B6"></span>
+    <p style="margin: 0; font-size: 18px; line-height: 36px">Coding <del style="text-decoration-color: {{pencil}}; text-decoration-thickness: 2px; color: #4A5670">teach</del> <ins style="text-decoration: none; font-family: Kalam, cursive; font-size: 21px; color: {{pencil}}">teaches</ins> children to think logically.</p>
+    <figcaption style="margin: 0; font-family: Kalam, cursive; font-size: 17px; line-height: 36px; color: {{pencil}}">One activity, so the verb takes -s.</figcaption>
+  </figure>
+
+  <div style="margin-top: auto">
+    <button type="button" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; height: 52px; box-sizing: border-box; border: 1.5px solid #18233A; border-radius: 10px; background: #FFFFFF; color: #18233A; font-size: 17px; font-weight: 700; cursor: pointer">
+      <!-- In the app this is Google's official sign-in button from its branding guidelines. -->
+      Continue with Google
+    </button>
+    <p style="margin: 14px 0 0; font-size: 15px; line-height: 22px; color: #4A5670; text-align: center">Invite only for now. Use the Google account your invite was sent to.</p>
+
+    <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid #DCE5F1">
+      <p style="margin: 0; font-size: 14px; line-height: 21px; color: #4A5670">Your answers go to Google's Gemini for feedback. On the free tier Google may use them to improve its models, so keep names, workplaces and addresses out.</p>
+      <a href="#" style="display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: #18233A">Privacy policy</a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pencil":{"editor":"color","default":"#1F56C8","options":["#1F56C8","#1C7A57","#6B3FC9"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { pencil: this.props.pencil ?? '#1F56C8' };
+  }
+}
+</script>
+</body>
+</html>

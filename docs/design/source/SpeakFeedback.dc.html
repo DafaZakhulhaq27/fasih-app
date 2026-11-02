@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fasih: Speaking feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Kalam:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18233A}
+a:hover{color:#1F56C8}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #1F56C8;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 2560px; box-sizing: border-box; background: #F5F7FB; color: #18233A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 12px 24px 0 12px">
+    <a href="Main.dc.html" aria-label="Back to today" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; color: #18233A">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 5l-7 7 7 7"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700">Your Part 2 answer</h1>
+    <p style="margin: 0 0 0 auto; font-size: 15px; line-height: 20px; color: #4A5670; font-variant-numeric: tabular-nums">1:42</p>
+  </header>
+  <p style="margin: 0; padding: 0 24px 0 60px; font-size: 15px; line-height: 20px; color: #4A5670">Part 2: a piece of technology you find useful</p>
+
+  <section aria-label="Estimated band" style="padding: 24px 24px 0">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+      <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700">Estimated band</h2>
+      <p style="margin: 0; font-size: 13px; line-height: 18px; color: #4A5670">Target 7.0</p>
+    </div>
+    <p style="margin: 6px 0 0; display: flex; align-items: baseline; gap: 10px">
+      <span style="font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">6.5</span>
+      <span style="display: inline-flex; align-items: center; height: 26px; padding: 0 8px; border: 1.5px dashed #C9D6E8; border-radius: 6px; font-size: 13px; color: #4A5670">estimate</span>
+    </p>
+    <ul style="list-style: none; margin: 14px 0 0; padding: 0">
+      <sc-for list="{{criteria}}" as="c" hint-placeholder-count="4">
+        <li style="padding: 14px 0; border-top: 1px solid #DCE5F1">
+          <p style="margin: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+            <span style="font-size: 17px; line-height: 24px; font-weight: 700">{{c.name}}</span>
+            <span style="font-size: 17px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums">{{c.band}}</span>
+          </p>
+          <span aria-hidden="true" style="position: relative; display: block; height: 6px; margin: 8px 0 10px; border-radius: 3px; background: #E9EEF6">
+            <span style="display: block; height: 6px; border-radius: 3px; background: {{c.fill}}; width: {{c.pct}}%"></span>
+            <span style="position: absolute; top: -4px; width: 2px; height: 14px; background: #18233A; left: {{c.target}}%"></span>
+          </span>
+          <span style="display: block; font-size: 15px; line-height: 22px; color: #4A5670">{{c.note}}</span>
+        </li>
+      </sc-for>
+    </ul>
+  </section>
+
+  <section aria-label="How you spoke" style="padding: 28px 24px 0">
+    <h2 style="margin: 0 0 12px; font-size: 20px; line-height: 26px; font-weight: 700">How you spoke</h2>
+    <div aria-hidden="true" style="position: relative; width: 342px; height: 66px">
+      <sc-for list="{{pauses}}" as="p" hint-placeholder-count="3">
+        <span style="position: absolute; top: 0; transform: translateX(-50%); font-family: Kalam, cursive; font-size: 15px; line-height: 18px; color: {{pencil}}; white-space: nowrap; left: {{p.center}}px">{{p.label}}</span>
+        <span style="position: absolute; top: 22px; height: 7px; box-sizing: border-box; border: 1.5px solid {{pencil}}; border-bottom: 0; border-radius: 3px 3px 0 0; left: {{p.left}}px; width: {{p.w}}px"></span>
+      </sc-for>
+      <sc-for list="{{segments}}" as="s" hint-placeholder-count="5">
+        <span style="position: absolute; top: 34px; height: 12px; border-radius: 3px; background: #18233A; left: {{s.left}}px; width: {{s.w}}px"></span>
+      </sc-for>
+      <sc-for list="{{fillers}}" as="f" hint-placeholder-count="7">
+        <span style="position: absolute; top: 54px; width: 7px; height: 7px; border-radius: 50%; background: {{pencil}}; left: {{f.left}}px"></span>
+      </sc-for>
+    </div>
+    <div aria-hidden="true" style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 13px; line-height: 18px; color: #4A5670; font-variant-numeric: tabular-nums">
+      <span>0:00</span>
+      <span>1:42</span>
+    </div>
+    <p style="margin: 10px 0 0; font-size: 13px; line-height: 18px; color: #4A5670; display: flex; flex-wrap: wrap; gap: 4px 14px">
+      <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 16px; height: 8px; border-radius: 2px; background: #18233A"></span>speech</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{pencil}}"></span>filler (um, uh)</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 6px; box-sizing: border-box; border: 1.5px solid {{pencil}}; border-bottom: 0; border-radius: 3px 3px 0 0"></span>pause over 2 seconds</span>
+    </p>
+    <p style="margin: 16px 0 0; font-size: 17px; line-height: 26px">118 words a minute, 7 fillers, and 3 pauses longer than 2 seconds. You stopped at 1:42; aim to use the full 2 minutes.</p>
+    <p style="margin: 6px 0 0; font-family: Kalam, cursive; font-size: 19px; line-height: 26px; color: {{pencil}}">Fillers down from 11 on your week 0 card.</p>
+  </section>
+
+  <section aria-label="Transcript with corrections" style="margin: 20px 16px 0; position: relative; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 4px; padding: 16px 18px 16px 52px">
+    <div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 36px; width: 2px; background: #EBB0B6"></div>
+    <p style="margin: 0; font-size: 18px; line-height: 48px; background-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 47px, #D5E1EF 47px, #D5E1EF 48px)">So, <span style="font-size: 15px; color: #5F687B; border: 1px solid #B8C3D6; border-radius: 4px; padding: 1px 5px">um</span> I'd like to talk about the map app on my phone. I use it almost every day, especially when I'm going somewhere I <span style="position: relative; display: inline-block"><del style="text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">never visit</del><ins style="position: absolute; left: 0; top: -4px; line-height: 18px; text-decoration: none; font-family: Kalam, cursive; font-size: 17px; color: {{pencil}}; white-space: nowrap">'ve never visited</ins></span><sup style="font-family: Kalam, cursive; font-size: 13px; line-height: 0; color: {{pencil}}; margin-left: 2px">1</sup> before. <span style="text-decoration: underline wavy #7C8598; text-decoration-thickness: 1.5px; text-underline-offset: 5px">It's very helpful</span><sup style="font-family: Kalam, cursive; font-size: 13px; line-height: 0; color: {{pencil}}; margin-left: 2px">2</sup>, <span style="font-size: 15px; color: #5F687B; border: 1px solid #B8C3D6; border-radius: 4px; padding: 1px 5px">uh</span> because it shows me when the traffic is <span style="position: relative; display: inline-block"><del style="text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">very crowded</del><ins style="position: absolute; left: 0; top: -4px; line-height: 18px; text-decoration: none; font-family: Kalam, cursive; font-size: 17px; color: {{pencil}}; white-space: nowrap">heavy</ins></span><sup style="font-family: Kalam, cursive; font-size: 13px; line-height: 0; color: {{pencil}}; margin-left: 2px">3</sup>, so I can find a <span style="position: relative; display: inline-block"><del style="text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">more faster</del><ins style="position: absolute; left: 0; top: -4px; line-height: 18px; text-decoration: none; font-family: Kalam, cursive; font-size: 17px; color: {{pencil}}; white-space: nowrap">faster</ins></span><sup style="font-family: Kalam, cursive; font-size: 13px; line-height: 0; color: {{pencil}}; margin-left: 2px">4</sup> route and <span style="font-size: 15px; color: #5F687B; border: 1px solid #B8C3D6; border-radius: 4px; padding: 1px 5px">um</span> arrive on time.</p>
+  </section>
+
+  <section style="padding: 28px 24px 0">
+    <h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700">4 corrections</h2>
+    <ol style="list-style: none; margin: 8px 0 0; padding: 0">
+      <li style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 6px; padding: 14px 0; border-bottom: 1px solid #DCE5F1">
+        <span aria-hidden="true" style="font-family: Kalam, cursive; font-size: 20px; line-height: 26px; color: {{pencil}}">1</span>
+        <div>
+          <p style="margin: 0; font-size: 17px; line-height: 26px"><del style="color: #4A5670; text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">I never visit before</del> <ins style="text-decoration: none; font-family: Kalam, cursive; font-size: 19px; color: {{pencil}}">I've never visited before</ins></p>
+          <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">“Never … before” covers your life up to now, so use the present perfect.</p>
+          <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: #4A5670">Grammatical Range &amp; Accuracy</p>
+        </div>
+      </li>
+      <li style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 6px; padding: 14px 0; border-bottom: 1px solid #DCE5F1">
+        <span aria-hidden="true" style="font-family: Kalam, cursive; font-size: 20px; line-height: 26px; color: {{pencil}}">2</span>
+        <div>
+          <p style="margin: 0; font-size: 17px; line-height: 26px"><span style="color: #4A5670; text-decoration: underline wavy #7C8598; text-decoration-thickness: 1.5px; text-underline-offset: 5px">It's very helpful</span> <ins style="text-decoration: none; font-family: Kalam, cursive; font-size: 19px; color: {{pencil}}">It's incredibly handy</ins></p>
+          <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">Not wrong, but a less common word shows range, and band 7 asks for some.</p>
+          <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: #4A5670">Lexical Resource</p>
+        </div>
+      </li>
+      <li style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 6px; padding: 14px 0; border-bottom: 1px solid #DCE5F1">
+        <span aria-hidden="true" style="font-family: Kalam, cursive; font-size: 20px; line-height: 26px; color: {{pencil}}">3</span>
+        <div>
+          <p style="margin: 0; font-size: 17px; line-height: 26px"><del style="color: #4A5670; text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">traffic is very crowded</del> <ins style="text-decoration: none; font-family: Kalam, cursive; font-size: 19px; color: {{pencil}}">traffic is heavy</ins></p>
+          <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">Traffic is “heavy” or “light”; places are “crowded”.</p>
+          <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: #4A5670">Lexical Resource</p>
+        </div>
+      </li>
+      <li style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 6px; padding: 14px 0; border-bottom: 1px solid #DCE5F1">
+        <span aria-hidden="true" style="font-family: Kalam, cursive; font-size: 20px; line-height: 26px; color: {{pencil}}">4</span>
+        <div>
+          <p style="margin: 0; font-size: 17px; line-height: 26px"><del style="color: #4A5670; text-decoration-color: {{pencil}}; text-decoration-thickness: 2px">more faster</del> <ins style="text-decoration: none; font-family: Kalam, cursive; font-size: 19px; color: {{pencil}}">faster</ins></p>
+          <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">“Faster” is already the comparative, so drop “more”.</p>
+          <p style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: #4A5670">Grammatical Range &amp; Accuracy</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-label="Better version" style="padding: 24px 24px 0">
+    <div style="display: flex; align-items: center; gap: 14px">
+      <button type="button" aria-label="Play the better version" style="flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; border: 0; background: #18233A; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>
+      </button>
+      <div>
+        <h2 style="margin: 0; font-size: 17px; line-height: 24px; font-weight: 700">Band 7–8 version, 0:24</h2>
+        <p style="margin: 2px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">Listen, then say it out loud with the audio.</p>
+      </div>
+    </div>
+    <div style="margin-top: 14px; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 4px; padding: 16px 18px">
+      <p style="margin: 0; font-size: 17px; line-height: 26px">I'd like to talk about the map app on my phone. I use it almost every day, especially when I'm heading somewhere I've never been before. It's incredibly handy, because it shows me where the traffic is heavy, so I can find a faster route and still arrive on time.</p>
+    </div>
+  </section>
+
+  <div style="margin-top: auto; padding: 28px 24px 32px; display: flex; flex-direction: column; gap: 12px">
+    <a href="SpeakRecord.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 10px; background: #18233A; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none">Try the same card again</a>
+    <a href="Main.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; box-sizing: border-box; border-radius: 10px; border: 1.5px solid #18233A; color: #18233A; font-size: 16px; font-weight: 700; text-decoration: none">Go to Part 3 questions</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pencil":{"editor":"color","default":"#1F56C8","options":["#1F56C8","#1C7A57","#6B3FC9"]},"$preview":{"width":390,"height":2560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const total = 102;
+    const width = 342;
+    const x = function (sec) { return Math.round((sec / total) * width * 10) / 10; };
+    const segments = [[0, 14], [16.6, 38], [38.8, 61], [63.2, 83], [85.4, 102]].map(function (s) {
+      return { left: x(s[0]), w: Math.round((x(s[1]) - x(s[0])) * 10) / 10 };
+    });
+    const pauses = [[14, 16.6, '2.6s'], [61, 63.2, '2.2s'], [83, 85.4, '2.4s']].map(function (p) {
+      const a = x(p[0]);
+      const b = x(p[1]);
+      return { center: Math.round(((a + b) / 2) * 10) / 10, left: a - 2, w: Math.round((b - a + 4) * 10) / 10, label: p[2] };
+    });
+    const fillers = [3, 9, 22, 30, 47, 70, 90].map(function (sec) {
+      return { left: Math.round((x(sec) - 3.5) * 10) / 10 };
+    });
+    const pencil = this.props.pencil ?? '#1F56C8';
+    const target = Math.round((7 / 9) * 1000) / 10;
+    const data = [
+      { name: 'Fluency & Coherence', band: 6.5, note: 'You kept going and linked your points. The three long pauses came just before new ideas.' },
+      { name: 'Lexical Resource', band: 6.0, note: 'Clear but general: “very helpful”, “very crowded”. Topic words would lift this most.' },
+      { name: 'Grammatical Range & Accuracy', band: 6.5, note: 'Some complex sentences; the present perfect and one comparative slipped.' },
+      { name: 'Pronunciation', band: 6.5, note: 'Judged from audio and still experimental. Read it as a trend, not a score.', experimental: true }
+    ];
+    const criteria = data.map(function (c) {
+      return { name: c.experimental ? c.name + ' (experimental)' : c.name, band: c.band.toFixed(1), note: c.note, pct: Math.round((c.band / 9) * 1000) / 10, target: target, fill: c.experimental ? '#7C8598' : pencil };
+    });
+    return { pencil: pencil, segments: segments, pauses: pauses, fillers: fillers, criteria: criteria };
+  }
+}
+</script>
+</body>
+</html>

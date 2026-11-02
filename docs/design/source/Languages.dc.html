@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fasih: Languages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Kalam:wght@400;700&amp;family=Noto+Naskh+Arabic:wght@400;700&amp;family=Noto+Sans+SC:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18233A}
+a:hover{color:#1F56C8}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #1F56C8;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7FB; color: #18233A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 12px 12px 4px">
+    <a href="Main.dc.html" aria-label="Back to today" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; color: #18233A">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 5l-7 7 7 7"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 700">Languages</h1>
+  </header>
+
+  <section aria-label="Learning now" style="padding: 16px 16px 0">
+    <a href="Main.dc.html" aria-current="true" style="display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 18px 20px; background: #FFFFFF; border: 1.5px solid #18233A; border-radius: 10px; color: #18233A; text-decoration: none">
+      <span>
+        <span style="display: block; font-size: 20px; line-height: 26px; font-weight: 700">English</span>
+        <span style="display: block; margin-top: 2px; font-size: 15px; line-height: 22px; color: #4A5670">12 cards due today. 71 mistakes tracked.</span>
+      </span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{pencil}}" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M5 13.5l4 3.8L19 6.5"></path></svg>
+    </a>
+    <p style="margin: 12px 4px 0; font-family: Kalam, cursive; font-size: 19px; line-height: 26px; color: {{pencil}}">Each language keeps its own mistakes, cards and progress.</p>
+  </section>
+
+  <section aria-label="Coming later" style="padding: 28px 16px 0">
+    <h2 style="margin: 0 4px 8px; font-size: 17px; line-height: 24px; font-weight: 700">Coming later</h2>
+    <ul style="list-style: none; margin: 0; padding: 0; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 10px">
+      <li style="display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #DCE5F1">
+        <span>
+          <span style="display: block; font-size: 17px; line-height: 24px; font-weight: 700">Arabic</span>
+          <span lang="ar" dir="rtl" style="display: block; margin-top: 2px; font-family: 'Noto Naskh Arabic', serif; font-size: 18px; line-height: 28px; color: #4A5670; text-align: left">العربية</span>
+        </span>
+        <span style="font-size: 13px; line-height: 18px; color: #4A5670">Not available yet</span>
+      </li>
+      <li style="display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 16px 20px">
+        <span>
+          <span style="display: block; font-size: 17px; line-height: 24px; font-weight: 700">Chinese (Mandarin)</span>
+          <span lang="zh-Hans" style="display: block; margin-top: 2px; font-family: 'Noto Sans SC', sans-serif; font-size: 17px; line-height: 26px; color: #4A5670">中文（普通话）</span>
+        </span>
+        <span style="font-size: 13px; line-height: 18px; color: #4A5670">Not available yet</span>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-label="What changes per language" style="padding: 28px 20px 0">
+    <h2 style="margin: 0 0 6px; font-size: 17px; line-height: 24px; font-weight: 700">What changes per language</h2>
+    <ul style="margin: 0; padding: 0 0 0 20px; font-size: 15px; line-height: 22px; color: #4A5670">
+      <li style="margin-bottom: 6px">Mistake types: articles and tense for English, tones and measure words for Chinese, gender agreement for Arabic.</li>
+      <li style="margin-bottom: 6px">Scenarios, voices and review cards.</li>
+      <li>Arabic text runs right to left, and Chinese progress counts characters instead of words.</li>
+    </ul>
+  </section>
+
+  <p style="margin: auto 24px 28px; font-size: 13px; line-height: 18px; color: #4A5670">Explanations stay in English or Indonesian, whichever language you practice.</p>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pencil":{"editor":"color","default":"#1F56C8","options":["#1F56C8","#1C7A57","#6B3FC9"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { pencil: this.props.pencil ?? '#1F56C8' };
+  }
+}
+</script>
+</body>
+</html>

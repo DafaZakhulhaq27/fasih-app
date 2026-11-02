@@ -1,0 +1,152 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-01T23:50:00Z"
+  },
+  "title": "Fasih — UI MVP",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Today",
+      "is_interactive": true
+    },
+    "Learn.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 1260,
+      "title": "Learn: IELTS 12 weeks",
+      "is_interactive": true
+    },
+    "Lesson.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 1180,
+      "title": "Lesson: matching headings",
+      "is_interactive": true
+    },
+    "LessonQuiz.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 960,
+      "title": "Lesson: practice",
+      "is_interactive": true
+    },
+    "Write.dc.html": {
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 2850,
+      "title": "Writing Task 2: AI feedback",
+      "is_interactive": true
+    },
+    "SpeakRecord.dc.html": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Speaking Part 2: recording",
+      "is_interactive": true
+    },
+    "SpeakFeedback.dc.html": {
+      "x": 2820,
+      "y": 0,
+      "w": 390,
+      "h": 2560,
+      "title": "Speaking Part 2 feedback",
+      "is_interactive": true
+    },
+    "Review.dc.html": {
+      "x": 3290,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Review card",
+      "is_interactive": true
+    },
+    "Mistakes.dc.html": {
+      "x": 3760,
+      "y": 0,
+      "w": 390,
+      "h": 1780,
+      "title": "Progress",
+      "is_interactive": true
+    },
+    "Languages.dc.html": {
+      "x": 4230,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Languages",
+      "is_interactive": true
+    },
+    "WriteDesktop.dc.html": {
+      "x": 0,
+      "y": 3040,
+      "w": 1280,
+      "h": 940,
+      "title": "Writing Task 2, test mode (desktop)",
+      "expand": "fill"
+    },
+    "SignIn.dc.html": {
+      "x": 4700,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Sign in with Google",
+      "is_interactive": true
+    },
+    "Account.dc.html": {
+      "x": 5170,
+      "y": 0,
+      "w": 390,
+      "h": 1620,
+      "title": "Account & privacy",
+      "is_interactive": true
+    },
+    "WriteSelf.dc.html": {
+      "x": 5640,
+      "y": 0,
+      "w": 390,
+      "h": 2880,
+      "title": "Writing Task 2: self-check (no AI)",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "SignIn.dc.html",
+    "Main.dc.html",
+    "Learn.dc.html",
+    "Lesson.dc.html",
+    "LessonQuiz.dc.html",
+    "Write.dc.html",
+    "WriteSelf.dc.html",
+    "SpeakRecord.dc.html",
+    "SpeakFeedback.dc.html",
+    "Review.dc.html",
+    "Mistakes.dc.html",
+    "Languages.dc.html",
+    "Account.dc.html",
+    "WriteDesktop.dc.html"
+  ],
+  "notes": {
+    "mobileTitle": {
+      "x": 0,
+      "y": -300,
+      "text": "Fasih, IELTS prep: mobile screens",
+      "kind": "title1",
+      "maxW": 6030
+    }
+  },
+  "designSystems": []
+}

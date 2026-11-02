@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fasih: Lesson, practice step</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Kalam:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#18233A}
+a:hover{color:#1F56C8}
+button,input{font-family:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #1F56C8;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 960px; box-sizing: border-box; background: #F5F7FB; color: #18233A; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; padding: 12px 12px 0">
+    <a href="Learn.dc.html" aria-label="Leave lesson" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; color: #18233A">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </a>
+    <p style="margin: 0; font-size: 15px; line-height: 20px; color: #4A5670; text-align: center">Week 2, Reading</p>
+    <span></span>
+  </header>
+
+  <ol aria-label="Lesson steps" style="list-style: none; margin: 12px 24px 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+    <li style="display: flex; flex-direction: column; gap: 6px">
+      <span aria-hidden="true" style="height: 4px; border-radius: 2px; background: {{pencil}}"></span>
+      <span style="font-size: 13px; line-height: 18px; color: #4A5670">Input</span>
+    </li>
+    <li style="display: flex; flex-direction: column; gap: 6px">
+      <span aria-hidden="true" style="height: 4px; border-radius: 2px; background: {{pencil}}"></span>
+      <span style="font-size: 13px; line-height: 18px; color: #4A5670">Notice</span>
+    </li>
+    <li aria-current="step" style="display: flex; flex-direction: column; gap: 6px">
+      <span aria-hidden="true" style="height: 4px; border-radius: 2px; background: {{pencil}}"></span>
+      <span style="font-size: 13px; line-height: 18px; font-weight: 700">Practice</span>
+    </li>
+    <li style="display: flex; flex-direction: column; gap: 6px">
+      <span aria-hidden="true" style="height: 4px; border-radius: 2px; background: #DCE5F1"></span>
+      <span style="font-size: 13px; line-height: 18px; color: #4A5670">Produce</span>
+    </li>
+  </ol>
+
+  <form style="display: flex; flex-direction: column; flex: 1; margin: 0">
+    <fieldset style="border: 0; margin: 0; padding: 24px 24px 0; min-width: 0">
+      <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Choose the best heading for paragraph C.</legend>
+      <p style="margin: 0; font-size: 13px; line-height: 18px; color: #4A5670">Question 2 of 5, matching headings</p>
+      <h1 aria-hidden="true" style="margin: 4px 0 12px; font-size: 22px; line-height: 28px; font-weight: 700">Choose the best heading for paragraph C.</h1>
+
+      <div style="position: relative; margin: 0 -8px 16px; background: #FFFFFF; border: 1px solid #DCE5F1; border-radius: 4px; padding: 12px 14px 12px 44px">
+        <div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 30px; width: 2px; background: #EBB0B6"></div>
+        <span aria-hidden="true" style="position: absolute; left: 0; top: 12px; width: 30px; text-align: center; font-weight: 700; font-size: 15px; line-height: 24px">C</span>
+        <p style="margin: 0; font-size: 15px; line-height: 24px">City sensors can now report traffic, air quality and noise every few seconds. <span style="background: #E9EEF6; box-shadow: inset 0 -2px 0 {{pencil}}">However, the volume of data has grown faster than councils' ability to use it</span>, and many dashboards are rarely opened by the people who make decisions.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <label style="display: grid; grid-template-columns: 24px 28px minmax(0, 1fr); gap: 8px; align-items: start; padding: 14px 16px; background: #FFFFFF; border: 1.5px solid #C9D6E8; border-radius: 10px; font-size: 16px; line-height: 24px; color: #4A5670">
+          <input type="radio" name="answer" value="i" disabled="disabled" style="width: 20px; height: 20px; margin: 2px 0 0">
+          <span style="font-family: Kalam, cursive; font-size: 17px">i</span>
+          <span>The many types of city sensors</span>
+        </label>
+        <label style="display: grid; grid-template-columns: 24px 28px minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 14px 16px; background: #FFFFFF; border: 2px solid {{pencil}}; border-radius: 10px; font-size: 16px; line-height: 24px; color: #18233A; font-weight: 700">
+          <input type="radio" name="answer" value="ii" checked="checked" style="width: 20px; height: 20px; margin: 2px 0 0; accent-color: {{pencil}}">
+          <span style="font-family: Kalam, cursive; font-size: 17px; font-weight: 400">ii</span>
+          <span>More information than officials can act on</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{pencil}}" role="img" aria-label="Correct" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px"><path d="M5 13.5l4 3.8L19 6.5"></path></svg>
+        </label>
+        <label style="display: grid; grid-template-columns: 24px 28px minmax(0, 1fr); gap: 8px; align-items: start; padding: 14px 16px; background: #FFFFFF; border: 1.5px solid #C9D6E8; border-radius: 10px; font-size: 16px; line-height: 24px; color: #4A5670">
+          <input type="radio" name="answer" value="iii" disabled="disabled" style="width: 20px; height: 20px; margin: 2px 0 0">
+          <span style="font-family: Kalam, cursive; font-size: 17px">iii</span>
+          <span>How sensors improve air quality</span>
+        </label>
+        <label style="display: grid; grid-template-columns: 24px 28px minmax(0, 1fr); gap: 8px; align-items: start; padding: 14px 16px; background: #FFFFFF; border: 1.5px solid #C9D6E8; border-radius: 10px; font-size: 16px; line-height: 24px; color: #4A5670">
+          <input type="radio" name="answer" value="iv" disabled="disabled" style="width: 20px; height: 20px; margin: 2px 0 0">
+          <span style="font-family: Kalam, cursive; font-size: 17px">iv</span>
+          <span>Why councils stopped buying sensors</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <section aria-label="Why" style="margin: 20px 24px 0">
+      <p style="margin: 0; font-family: Kalam, cursive; font-size: 20px; line-height: 26px; color: {{pencil}}">Right.</p>
+      <p style="margin: 4px 0 0; font-size: 15px; line-height: 22px; color: #4A5670">The paragraph turns at “However”: the point is that the data grows faster than anyone uses it. Heading i only lists the examples, and iii copies the words “air quality”.</p>
+    </section>
+
+    <div style="margin-top: auto; padding: 24px 24px 32px">
+      <a href="LessonQuiz.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 10px; background: #18233A; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none">Next question</a>
+    </div>
+  </form>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pencil":{"editor":"color","default":"#1F56C8","options":["#1F56C8","#1C7A57","#6B3FC9"]},"$preview":{"width":390,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { pencil: this.props.pencil ?? '#1F56C8' };
+  }
+}
+</script>
+</body>
+</html>
