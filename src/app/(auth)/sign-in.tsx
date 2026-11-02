@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
-import { useState, type ReactElement } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState, type ReactElement } from 'react';
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithGoogle } from '@/auth/google-sign-in';
@@ -10,12 +10,26 @@ import { borderWidth, colors, fonts, gutter, radius, textStyles } from '@/theme'
 
 // docs/design/screens/01-signin.png
 export default function SignInScreen(): ReactElement {
-  // Supabase Auth redirects back here with these params when sign-in fails, for example
+  // Supabase Auth redirects back here with error params when sign-in fails, for example
   // when the "Before User Created" hook rejects an email without an invite.
-  const params = useLocalSearchParams<{ error_description?: string }>();
+  const params = useLocalSearchParams<{ error_description?: string | string[] }>();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const message = error ?? params.error_description ?? null;
+  const message = error ?? firstValue(params.error_description) ?? redirectErrorFromHash();
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      return;
+    }
+    // Back from Google restores this page from the back-forward cache with pending still set.
+    const onPageShow = (event: PageTransitionEvent): void => {
+      if (event.persisted) {
+        setPending(false);
+      }
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
+  }, []);
 
   async function handleSignIn(): Promise<void> {
     setPending(true);
@@ -70,6 +84,18 @@ export default function SignInScreen(): ReactElement {
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+function firstValue(value: string | string[] | undefined): string | null {
+  return (Array.isArray(value) ? value[0] : value) ?? null;
+}
+
+// Auth may also put redirect errors in the URL fragment (#error_description=...).
+function redirectErrorFromHash(): string | null {
+  if (Platform.OS !== 'web') {
+    return null;
+  }
+  return new URLSearchParams(window.location.hash.slice(1)).get('error_description');
 }
 
 const RULE_GAP = 36;

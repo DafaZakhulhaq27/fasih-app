@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, processLock } from '@supabase/supabase-js';
 import { AppState, Platform } from 'react-native';
 
 import type { Database } from './database.types';
@@ -18,6 +18,9 @@ export const supabase = createClient<Database>(
       // On the web, Google redirects back with ?code=..., which supabase-js exchanges for a session.
       detectSessionInUrl: Platform.OS === 'web',
       flowType: 'pkce',
+      // The web uses navigator.locks by default; native has no equivalent, so serialize auth
+      // operations in-process to stop two refreshes from spending the same refresh token.
+      lock: Platform.OS === 'web' ? undefined : processLock,
     },
   },
 );

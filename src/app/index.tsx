@@ -12,12 +12,15 @@ import { colors, gutter, textStyles } from '@/theme';
 export default function TodayScreen(): ReactElement {
   const { session } = useSession();
   const [signingOut, setSigningOut] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSignOut(): Promise<void> {
     setSigningOut(true);
+    setError(null);
     // The session provider sees SIGNED_OUT and the route guard returns to sign-in.
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) {
+      setError(`Could not sign out: ${signOutError.message}`);
       setSigningOut(false);
     }
   }
@@ -30,6 +33,11 @@ export default function TodayScreen(): ReactElement {
           Signed in as {session?.user.email}. Your daily lesson, practice and review will appear
           here.
         </Text>
+        {error ? (
+          <Text accessibilityRole="alert" style={styles.body}>
+            {error}
+          </Text>
+        ) : null}
         {/* Sign out moves to the Account screen (13-account) once it exists. */}
         <Button variant="secondary" label="Sign out" busy={signingOut} onPress={handleSignOut} />
       </View>
