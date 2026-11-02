@@ -3,7 +3,9 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { devSignIn, devSignInAvailable } from '@/auth/dev-sign-in';
 import { signInWithGoogle } from '@/auth/google-sign-in';
+import { Button } from '@/components/button';
 import { GoogleSignInButton } from '@/components/google-sign-in-button';
 import { Wordmark } from '@/components/wordmark';
 import { borderWidth, colors, fonts, gutter, radius, textStyles } from '@/theme';
@@ -43,6 +45,18 @@ export default function SignInScreen(): ReactElement {
     }
   }
 
+  async function handleDevSignIn(): Promise<void> {
+    setPending(true);
+    setError(null);
+    try {
+      // The session provider picks up the new session and the route guard moves on.
+      await devSignIn();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Dev sign-in failed.');
+      setPending(false);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scroll}>
@@ -68,6 +82,14 @@ export default function SignInScreen(): ReactElement {
                 ? 'Opening Google…'
                 : 'Invite only for now. Use the Google account your invite was sent to.'}
             </Text>
+            {devSignInAvailable ? (
+              <Button
+                variant="secondary"
+                label="Dev sign-in (local Supabase only)"
+                busy={pending}
+                onPress={handleDevSignIn}
+              />
+            ) : null}
           </View>
 
           <View style={styles.privacy}>

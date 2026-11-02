@@ -90,6 +90,10 @@ Keputusan:
 - **Tipe database di-generate** ke `src/lib/database.types.ts` (`npm run db:types`); CI gagal jika file ini tidak cocok dengan migrasi.
 - **Login Google di Android belum dipasang.** Modul native-nya butuh development build dan OAuth client Android, jadi `google-sign-in.native.ts` untuk sementara hanya menampilkan pesan "pakai versi web dulu".
 - **Tombol "Sign out" sementara ada di layar placeholder Today**, untuk menguji alur keluar-masuk. Nanti pindah ke Account.
+- **"Dev sign-in" untuk Supabase lokal** (ditambahkan supaya app bisa dicoba sebelum OAuth Google ada, dan untuk E2E nanti):
+  - Tombol ini hanya muncul di build development yang terhubung ke Supabase di mesin sendiri atau LAN (localhost, 127.0.0.1, 10.0.2.2 untuk emulator Android, atau IP privat).
+  - Akun `dev@example.test` dibuat lewat `signUp` biasa pada pemakaian pertama, jadi tetap melewati hook undangan (email ini ada di `seed.sql`).
+  - Password-nya tertulis di kode karena hanya berlaku di database lokal. Di project hosted tombolnya tidak tampil, dan email itu tidak diundang.
 - **Link "Privacy policy" dari desain belum dipasang**, karena halaman kebijakan privasinya belum ada.
 - **Tombol Google memakai aset resmi** dari `signin-assets.zip` Google: varian Light, Square, Android + Web, PNG @4x, ditampilkan 216×48 (rasio aslinya). Teksnya "Sign in with Google" (teks bawaan aset, salah satu teks yang diizinkan Google), bukan "Continue with Google" seperti di desain; warna garis (#747775) dan fontnya juga mengikuti Google, bukan token kita. PNG dipilih karena logo "G" di SVG-nya memakai `foreignObject` dan filter blur yang tidak digambar renderer SVG native. Sumber dan aturannya dicatat di `assets/images/google/README.md`.
 
