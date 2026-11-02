@@ -22,6 +22,123 @@ export type Database = {
         };
         Relationships: [];
       };
+      attempts: {
+        Row: {
+          audio_path: string | null;
+          check_mode: string;
+          created_at: string;
+          duration_ms: number | null;
+          filler_count: number | null;
+          id: string;
+          long_pause_count: number | null;
+          raw_text: string | null;
+          self_review: Json | null;
+          session_id: string;
+          status: string;
+          time_spent_s: number | null;
+          transcript: string | null;
+          updated_at: string;
+          user_id: string;
+          word_count: number | null;
+          wpm: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          audio_path?: string | null;
+          check_mode?: string;
+          created_at?: string;
+          duration_ms?: number | null;
+          filler_count?: number | null;
+          id?: string;
+          long_pause_count?: number | null;
+          raw_text?: string | null;
+          self_review?: Json | null;
+          session_id: string;
+          status?: string;
+          time_spent_s?: number | null;
+          transcript?: string | null;
+          updated_at?: string;
+          user_id?: string;
+          word_count?: number | null;
+          wpm?: number | null;
+        };
+        Update: {
+          audio_path?: string | null;
+          check_mode?: string;
+          created_at?: string;
+          duration_ms?: number | null;
+          filler_count?: number | null;
+          id?: string;
+          long_pause_count?: number | null;
+          raw_text?: string | null;
+          self_review?: Json | null;
+          session_id?: string;
+          status?: string;
+          time_spent_s?: number | null;
+          transcript?: string | null;
+          updated_at?: string;
+          user_id?: string;
+          word_count?: number | null;
+          wpm?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'attempts_session_id_fkey';
+            columns: ['session_id'];
+            isOneToOne: false;
+            referencedRelation: 'practice_sessions';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      band_scores: {
+        Row: {
+          attempt_id: string | null;
+          band: number;
+          criterion: string | null;
+          id: string;
+          is_estimate: boolean;
+          raw_score: number | null;
+          recorded_at: string;
+          skill: string;
+          source: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          attempt_id?: string | null;
+          band: number;
+          criterion?: string | null;
+          id?: string;
+          is_estimate?: boolean;
+          raw_score?: number | null;
+          recorded_at?: string;
+          skill: string;
+          source: string;
+          user_id?: string;
+        };
+        Update: {
+          attempt_id?: string | null;
+          band?: number;
+          criterion?: string | null;
+          id?: string;
+          is_estimate?: boolean;
+          raw_score?: number | null;
+          recorded_at?: string;
+          skill?: string;
+          source?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'band_scores_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: false;
+            referencedRelation: 'attempts';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       curriculum_units: {
         Row: {
           created_at: string;
@@ -101,6 +218,48 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
+      };
+      feedback: {
+        Row: {
+          attempt_id: string;
+          created_at: string;
+          id: string;
+          improved: string | null;
+          model: string;
+          payload: NonNullable<Json>;
+          prompt_version: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          attempt_id: string;
+          created_at?: string;
+          id?: string;
+          improved?: string | null;
+          model: string;
+          payload: NonNullable<Json>;
+          prompt_version: string;
+          user_id: string;
+        };
+        Update: {
+          attempt_id?: string;
+          created_at?: string;
+          id?: string;
+          improved?: string | null;
+          model?: string;
+          payload?: NonNullable<Json>;
+          prompt_version?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'feedback_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: true;
+            referencedRelation: 'attempts';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       lesson_progress: {
         Row: {
@@ -189,6 +348,141 @@ export type Database = {
           },
         ];
       };
+      mistake_categories: {
+        Row: {
+          criterion: string;
+          id: string;
+          label: string;
+          slug: string;
+          sort_order: number;
+          target_language: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          criterion: string;
+          id?: string;
+          label: string;
+          slug: string;
+          sort_order?: number;
+          target_language?: string;
+        };
+        Update: {
+          criterion?: string;
+          id?: string;
+          label?: string;
+          slug?: string;
+          sort_order?: number;
+          target_language?: string;
+        };
+        Relationships: [];
+      };
+      mistakes: {
+        Row: {
+          attempt_id: string | null;
+          category_id: string;
+          corrected_span: string;
+          created_at: string;
+          id: string;
+          original_span: string;
+          severity: string;
+          source: string;
+          status: string;
+          subcategory: string | null;
+          target_language: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          attempt_id?: string | null;
+          category_id: string;
+          corrected_span: string;
+          created_at?: string;
+          id?: string;
+          original_span: string;
+          severity?: string;
+          source: string;
+          status?: string;
+          subcategory?: string | null;
+          target_language?: string;
+          user_id?: string;
+        };
+        Update: {
+          attempt_id?: string | null;
+          category_id?: string;
+          corrected_span?: string;
+          created_at?: string;
+          id?: string;
+          original_span?: string;
+          severity?: string;
+          source?: string;
+          status?: string;
+          subcategory?: string | null;
+          target_language?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'mistakes_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: false;
+            referencedRelation: 'attempts';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mistakes_category_id_fkey';
+            columns: ['category_id'];
+            isOneToOne: false;
+            referencedRelation: 'mistake_categories';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      practice_sessions: {
+        Row: {
+          created_at: string;
+          id: string;
+          lesson_id: string | null;
+          mode: string;
+          prompt_id: string | null;
+          target_language: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          lesson_id?: string | null;
+          mode: string;
+          prompt_id?: string | null;
+          target_language?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          lesson_id?: string | null;
+          mode?: string;
+          prompt_id?: string | null;
+          target_language?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'practice_sessions_lesson_id_fkey';
+            columns: ['lesson_id'];
+            isOneToOne: false;
+            referencedRelation: 'lessons';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'practice_sessions_prompt_id_fkey';
+            columns: ['prompt_id'];
+            isOneToOne: false;
+            referencedRelation: 'prompts';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       profiles: {
         Row: {
           active_language: string;
@@ -228,6 +522,46 @@ export type Database = {
           id?: string;
           learning_languages?: string[];
           role?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      prompts: {
+        Row: {
+          content: NonNullable<Json>;
+          created_at: string;
+          essay_type: string | null;
+          id: string;
+          min_words: number | null;
+          target_language: string;
+          task: string;
+          time_limit_s: number | null;
+          topic: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          content: NonNullable<Json>;
+          created_at?: string;
+          essay_type?: string | null;
+          id?: string;
+          min_words?: number | null;
+          target_language?: string;
+          task: string;
+          time_limit_s?: number | null;
+          topic: string;
+          updated_at?: string;
+        };
+        Update: {
+          content?: NonNullable<Json>;
+          created_at?: string;
+          essay_type?: string | null;
+          id?: string;
+          min_words?: number | null;
+          target_language?: string;
+          task?: string;
+          time_limit_s?: number | null;
+          topic?: string;
           updated_at?: string;
         };
         Relationships: [];
