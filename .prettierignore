@@ -1,0 +1,9 @@
+# Docs are written by hand; keep their formatting as-is.
+*.md
+docs/
+
+package-lock.json
+assets/
+dist/
+.expo/
+coverage/

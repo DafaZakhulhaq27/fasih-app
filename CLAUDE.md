@@ -18,11 +18,16 @@ Fasih is an AI-assisted IELTS practice app for iOS, Android and web: daily lesso
 
 Verify version-specific APIs against current docs (Expo SDK 58, Supabase, Gemini) instead of relying on memory. Do not invent APIs.
 
-## Proposed layout (confirm during Fase 0 step 1)
+## Layout
+
+Confirmed in Fase 0 step 1. Routes live in `src/app/`, as in the Expo SDK 58 template.
 
 ```
-app/                      Expo Router routes
-src/                      components, hooks, client data layer, design tokens
+src/
+  app/                    Expo Router routes
+  theme/                  design tokens: colors, fonts, type sizes, layout values
+  components/ hooks/ ...  added when first needed (client data layer, UI)
+assets/                   app icon, splash, favicon
 supabase/
   migrations/             SQL migrations, RLS policies, RPCs
   functions/
@@ -33,7 +38,7 @@ eval/                     golden set runner; eval/private/ is git-ignored
 docs/
 ```
 
-The app imports shared code through a path alias (`@core/*` -> `supabase/functions/_shared/core/*`). Code in `_shared/core` must not import React Native, Deno or Node APIs, so it runs in the app, in Edge Functions and in Vitest. In Edge Functions, map bare imports such as `zod` to `npm:` specifiers in `deno.json`.
+The app imports its own code as `@/*` (-> `src/*`) and shared code through a path alias (`@core/*` -> `supabase/functions/_shared/core/*`). Code in `_shared/core` must not import React Native, Deno or Node APIs, so it runs in the app, in Edge Functions and in Vitest. In Edge Functions, map bare imports such as `zod` to `npm:` specifiers in `deno.json`.
 
 ## Rules that do not bend
 
@@ -62,7 +67,24 @@ The app imports shared code through a path alias (`@core/*` -> `supabase/functio
 
 ## Commands
 
-Fill this in during Fase 0 step 1 (dev server, typecheck, lint, test, `supabase start`, functions serve, web deploy).
+Node 22.13 or newer (see `.nvmrc`). Install with `npm ci`; add Expo packages with `npx expo install <pkg>` so versions match SDK 58.
+
+| Task | Command | Notes |
+| --- | --- | --- |
+| Dev server | `npm start` | Metro + QR code for Expo Go or a development build |
+| Web | `npm run web` | http://localhost:8081 |
+| Android | `npm run android` | Needs a device (USB debugging) or an emulator; installs the matching Expo Go via adb |
+| Typecheck | `npm run typecheck` | `tsc --noEmit` |
+| Lint | `npm run lint` | `expo lint --max-warnings 0` (ESLint 9 + Prettier) |
+| Format | `npm run format` | `npm run format:check` to check only; Markdown and `docs/` are skipped |
+| Unit tests | `npm test` | Vitest, once; `npm run test:watch` to watch |
+| Dependency check | `npx expo-doctor` | Expo package versions vs SDK 58 |
+| Web build | `npx expo export -p web` | Static SPA in `dist/` (`web.output: single`) |
+| Local Supabase | `supabase start` | Set up in Fase 0 step 2; needs the Supabase CLI and Docker |
+| Edge Functions | `supabase functions serve` | Set up in Fase 0 step 5 |
+| Web deploy | `npx expo export -p web && eas deploy` | Set up in Fase 0 step 4 |
+
+CI (`.github/workflows/ci.yml`) runs typecheck, lint and unit tests on every push and pull request.
 
 ## Working with the owner
 

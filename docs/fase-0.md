@@ -15,13 +15,29 @@ Semua secret disimpan di `.env.local` (tidak di-commit) atau lewat `supabase sec
 
 ## Langkah 1 — Scaffold app
 
-- [ ] Expo SDK 58 + Expo Router + TypeScript strict di root repo. Gabungkan `.gitignore` bawaan Expo dengan `.gitignore` yang sudah ada.
-- [ ] ESLint + Prettier, Vitest, path alias `@core/*` ke `supabase/functions/_shared/core/*`.
-- [ ] Token desain dari `docs/design/README.md` sebagai satu modul `src/theme`, plus font Atkinson Hyperlegible dan Kalam.
-- [ ] GitHub Actions: typecheck, lint, unit test di setiap push dan PR.
-- [ ] Isi bagian **Commands** di `CLAUDE.md`.
+- [x] Expo SDK 58 + Expo Router + TypeScript strict di root repo. Gabungkan `.gitignore` bawaan Expo dengan `.gitignore` yang sudah ada.
+- [x] ESLint + Prettier, Vitest, path alias `@core/*` ke `supabase/functions/_shared/core/*`.
+- [x] Token desain dari `docs/design/README.md` sebagai satu modul `src/theme`, plus font Atkinson Hyperlegible dan Kalam.
+- [ ] GitHub Actions: typecheck, lint, unit test di setiap push dan PR. Workflow sudah ditulis; dicentang setelah run pertamanya hijau.
+- [x] Isi bagian **Commands** di `CLAUDE.md`.
 
 **Selesai jika:** app tampil di web dan di Android (Expo Go cukup untuk langkah ini), dan CI hijau.
+
+- [x] App tampil di web (dev server dan `npx expo export -p web`).
+- [ ] App tampil di Android. Ditunda karena belum ada HP atau emulator; `npx expo export -p android` sudah berhasil membuat bundle.
+- [ ] CI hijau.
+
+Keputusan:
+
+- **Scaffold di luar root.** `create-expo-app` menolak folder yang sudah berisi `CLAUDE.md`, `README.md`, `.claude/` dan `.env.example`. Template `default@sdk-58` dibuat di folder sementara, lalu hanya `package.json`, `app.json`, `tsconfig.json` (ketiganya diadaptasi) dan aset ikon/splash yang disalin. Demo, `README.md`, `LICENSE` dan `AGENTS.md` milik template tidak dipakai.
+- **Route di `src/app/`**, mengikuti template SDK 58. Layout di `CLAUDE.md` diperbarui.
+- **Package ID `com.dafazakhulhaq.fasih`** untuk Android (`package`) dan iOS (`bundleIdentifier`). Pakai ini saat membuat OAuth client Android di Langkah 0.
+- **`web.output: "single"` (SPA).** App ada di balik login dan sesi Supabase hidup di klien, jadi tidak butuh SSR atau halaman statis per route. Docs Expo bertentangan soal nilai default, jadi ditulis eksplisit.
+- **ESLint dipin ke `^9`.** `eslint-plugin-react` dan `eslint-plugin-import` di `eslint-config-expo` belum mendukung ESLint 10.
+- **Aturan `_shared/core` ditegakkan lint.** `no-restricted-imports` menolak import React, React Native, Expo, Node dan Deno di folder itu.
+- **Unit test pertama: kontras warna.** `src/theme/colors.test.ts` memastikan pasangan token untuk teks lolos WCAG AA (4.5:1) dan tanda non-teks lolos 3:1. Ini juga menjaga warna `pencil` alternatif nanti.
+- **Font dari `@expo-google-fonts` lewat `useFonts`**, diimpor per bobot supaya hanya 5 file yang ikut bundle. Cara ini jalan di Expo Go dan web. Kalam berukuran ~430 KB per bobot; bisa di-subset nanti jika ukuran bundle web jadi masalah.
+- **`npm audit`: 27 temuan moderate** dari dua advisory (`glob`, `minimatch`) di tooling dev (Expo CLI, ESLint), tidak ikut bundle app. "Fix" yang ditawarkan npm berupa downgrade major, jadi dibiarkan sampai Expo atau ESLint merilis versi baru.
 
 ## Langkah 2 — Supabase lokal dan migrasi pertama
 
