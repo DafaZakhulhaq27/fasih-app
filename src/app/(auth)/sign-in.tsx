@@ -4,7 +4,7 @@ import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithGoogle } from '@/auth/google-sign-in';
-import { Button } from '@/components/button';
+import { GoogleSignInButton } from '@/components/google-sign-in-button';
 import { Wordmark } from '@/components/wordmark';
 import { borderWidth, colors, fonts, gutter, radius, textStyles } from '@/theme';
 
@@ -62,15 +62,11 @@ export default function SignInScreen(): ReactElement {
                 {message}
               </Text>
             ) : null}
-            {/* TODO(fase-0 step 3): swap for Google's official sign-in button asset. */}
-            <Button
-              variant="secondary"
-              label={pending ? 'Opening Google…' : 'Continue with Google'}
-              busy={pending}
-              onPress={handleSignIn}
-            />
-            <Text style={styles.inviteNote}>
-              Invite only for now. Use the Google account your invite was sent to.
+            <GoogleSignInButton busy={pending} onPress={handleSignIn} />
+            <Text accessibilityLiveRegion="polite" style={styles.inviteNote}>
+              {pending
+                ? 'Opening Google…'
+                : 'Invite only for now. Use the Google account your invite was sent to.'}
             </Text>
           </View>
 

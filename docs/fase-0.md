@@ -70,7 +70,7 @@ Keputusan:
 - [ ] Android: `@react-native-google-signin/google-signin` lalu `supabase.auth.signInWithIdToken`. Ini butuh development build, tidak jalan di Expo Go.
 - [ ] Sesi tersimpan aman di perangkat dan tetap ada setelah app ditutup. Web terbukti (sesi bertahan setelah reload, sign out menghapusnya). Native memakai `LargeSecureStore`, belum diuji di perangkat.
 - [x] Pendaftaran hanya lewat undangan: hook "Before User Created" yang mengecek `allowed_emails`. Cek dulu apakah hook ini tersedia di free plan. Jika tidak, matikan pendaftaran publik dan catat keputusannya di sini.
-- [ ] Layar Sign in sesuai `docs/design/screens/01-signin.png`, memakai tombol resmi Google. Tata letak sudah sesuai desain; aset tombol resmi Google belum dipasang.
+- [x] Layar Sign in sesuai `docs/design/screens/01-signin.png`, memakai tombol resmi Google.
 
 **Selesai jika:** login berhasil di web dan Android, email di luar daftar undangan ditolak, dan keluar-masuk app tidak meminta login ulang.
 
@@ -91,6 +91,7 @@ Keputusan:
 - **Login Google di Android belum dipasang.** Modul native-nya butuh development build dan OAuth client Android, jadi `google-sign-in.native.ts` untuk sementara hanya menampilkan pesan "pakai versi web dulu".
 - **Tombol "Sign out" sementara ada di layar placeholder Today**, untuk menguji alur keluar-masuk. Nanti pindah ke Account.
 - **Link "Privacy policy" dari desain belum dipasang**, karena halaman kebijakan privasinya belum ada.
+- **Tombol Google memakai aset resmi** dari `signin-assets.zip` Google: varian Light, Square, Android + Web, PNG @4x, ditampilkan 216×48 (rasio aslinya). Teksnya "Sign in with Google" (teks bawaan aset, salah satu teks yang diizinkan Google), bukan "Continue with Google" seperti di desain; warna garis (#747775) dan fontnya juga mengikuti Google, bukan token kita. PNG dipilih karena logo "G" di SVG-nya memakai `foreignObject` dan filter blur yang tidak digambar renderer SVG native. Sumber dan aturannya dicatat di `assets/images/google/README.md`.
 
 ## Langkah 4 — Deploy gratis
 
