@@ -136,6 +136,12 @@ Keputusan (schema dan guard):
   - Penjelasan memakai bahasa pilihan pengguna (`explain_lang`), sedangkan koreksi dan versi perbaikan tetap berbahasa Inggris.
   - Template diisi oleh `renderFeedbackPrompt` di core; versinya (`feedback.v1`) disimpan di tiap baris `feedback`. Cara Edge Function membaca file `.md` ini diputuskan saat function-nya dibuat.
   - Prompt ini belum pernah dicoba ke model; kualitasnya baru terukur lewat eval setelah API key Gemini ada.
+- **Penghitung kata lewat `LanguagePack`** (dikerjakan lebih dulu, karena `word_count` dibutuhkan prompt dan layar self-check):
+  - Pack `en` menghitung kata sebagai deretan huruf atau angka. Apostrof, tanda hubung dan titik di tengah kata tidak memecahnya: "don't", "well-known", "3.5" dan "e.g." masing-masing satu kata. Tanda pisah dan simbol tidak dihitung.
+  - Regex-nya memakai rentang karakter eksplisit, bukan `\p{L}`, supaya hasilnya sama di Hermes, Deno dan Node. Regex yang sama sudah lolos kompilasi `hermesc` (bawaan React Native); perilakunya di perangkat belum diuji.
+  - `writingStats` menghasilkan sinyal untuk desain 07-writeself: jumlah kata, paragraf, rentang panjang kalimat, kata penghubung yang membuka lebih dari satu paragraf, dan frasa dua kata yang berulang. Frasa yang berulang tidak menyeberangi akhir kalimat atau koma.
+  - Filler hanya bunyi ragu ("um", "er"). Kata seperti "like" atau "you know" juga kata biasa, jadi diserahkan ke feedback Speaking.
+  - Hitungan ini belum dibandingkan dengan penghitung kata di tes komputer resmi.
 - **Import relatif di `_shared/core` memakai ekstensi `.ts`** supaya bisa dipakai Deno tanpa diubah (`allowImportingTsExtensions` di `tsconfig.json`).
 
 ## Langkah 7 — Cek TTS untuk Listening
