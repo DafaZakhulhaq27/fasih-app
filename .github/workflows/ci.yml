@@ -33,3 +33,28 @@ jobs:
 
       - name: Unit tests
         run: npm test
+
+  database:
+    name: Migrations and RLS tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Only Postgres and Auth are needed: the tests run SQL directly.
+      - name: Start local Supabase
+        run: >-
+          npx supabase start
+          -x realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Reset the database twice
+        run: npx supabase db reset && npx supabase db reset
+
+      - name: RLS tests
+        run: npx supabase test db

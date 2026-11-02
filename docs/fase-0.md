@@ -41,12 +41,27 @@ Keputusan:
 
 ## Langkah 2 — Supabase lokal dan migrasi pertama
 
-- [ ] `supabase init` dan `supabase start` (butuh Docker).
-- [ ] Migrasi: `profiles` (termasuk `role`, `ai_enabled`, `default_check`), `allowed_emails`, `exam_plans`, trigger yang membuat `profiles` saat user baru dibuat, dan RLS untuk ketiganya.
-- [ ] Semua foreign key ke pengguna memakai `on delete cascade`.
-- [ ] Seed tanpa data pribadi.
+- [x] `supabase init` dan `supabase start` (butuh Docker).
+- [x] Migrasi: `profiles` (termasuk `role`, `ai_enabled`, `default_check`), `allowed_emails`, `exam_plans`, trigger yang membuat `profiles` saat user baru dibuat, dan RLS untuk ketiganya.
+- [x] Semua foreign key ke pengguna memakai `on delete cascade`.
+- [x] Seed tanpa data pribadi.
 
 **Selesai jika:** `supabase db reset` bisa diulang tanpa error, dan test RLS membuktikan user A tidak bisa membaca atau mengubah baris user B.
+
+- [x] `supabase db reset` dua kali berturut-turut tanpa error (lokal dan di CI).
+- [x] 30 test pgTAP lolos. Saat policy sengaja dibocorkan di database lokal, 5 test gagal, jadi test-nya memang menangkap kebocoran.
+
+Keputusan:
+
+- **Supabase CLI sebagai dev dependency** (`supabase` 3.0.0 di `package.json`), dijalankan lewat `npx supabase` atau `npm run db:*`. Versinya ikut terkunci di `package-lock.json`, sama di laptop dan CI.
+- **Default privasi di `profiles`: `ai_enabled = false` dan `default_check = 'manual'`.** Jawaban baru dikirim ke Gemini setelah pengguna menyalakan AI di Account. Ini juga membuat teman yang diundang otomatis dalam mode manual (sesuai plan). Kalau kamu lebih suka AI menyala sejak awal untuk akunmu, cukup nyalakan sekali di Account (Langkah 3+), atau ubah default di migrasi berikutnya.
+- **Pengguna tidak bisa menaikkan hak sendiri.** Lewat grant per kolom, pengguna hanya boleh mengubah `display_name`, `ai_enabled`, `default_check`, `active_language`, `learning_languages` dan `explain_lang`. `role` dan `daily_budget_usd` hanya bisa diubah lewat SQL atau service role.
+- **`daily_budget_usd` boleh `null`**, artinya memakai batas default server (diatur saat guard kuota dibuat).
+- **`exam_plans.min_section_band`** ditambahkan karena plan menyebut syarat kampus perlu menyimpan overall dan nilai minimum per bagian.
+- **Cek admin lewat `private.is_admin()`**, fungsi security definer di schema `private` yang tidak diekspos Data API, supaya policy tidak rekursif ke `profiles`.
+- **`allowed_emails` hanya bisa dibaca dan diubah admin.** Akses untuk hook "Before User Created" (role `supabase_auth_admin`) ditambahkan di Langkah 3 bersama hook-nya.
+- **Test RLS memakai pgTAP polos**, tanpa helper `dbdev` yang mengunduh SQL dari internet saat test. Ada juga test schema yang berlaku untuk tabel di migrasi berikutnya: semua tabel `public` wajib RLS, semua FK ke `auth.users` wajib cascade, `anon` tidak punya hak apa pun, dan fungsi security definer wajib mengunci `search_path`.
+- **CI punya job `database`**: start Supabase (hanya Postgres dan Auth), `db reset` dua kali, lalu `supabase test db`.
 
 ## Langkah 3 — Login Google
 
