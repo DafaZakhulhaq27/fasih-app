@@ -145,8 +145,17 @@ Keputusan (schema dan guard):
 
 ## Langkah 8 — Silabus minggu 1–2 sebagai data
 
-- [ ] Data `curriculum_units` dan `lessons` untuk minggu 1–2 (topik Pendidikan dan Teknologi), sesuai tabel kurikulum di `docs/plan.md`.
+- [ ] Data `curriculum_units` dan `lessons` untuk minggu 1–2 (topik Pendidikan dan Teknologi), sesuai tabel kurikulum di `docs/plan.md`. Tabelnya sudah ada (migrasi `curriculum`); datanya belum.
 - [ ] Contoh jawaban band 7–8 dan kunci jawaban dicek manual sebelum dipakai.
+
+Keputusan (tabel, dikerjakan lebih dulu sambil menunggu Langkah 0):
+
+- **`curriculum_units`**: satu baris per minggu per bahasa dan ujian, dengan `topic` dan `focus` (jsonb: tipe soal, pola target, kosakata).
+  - `module` kosong berarti unit untuk dua modul. Mulai minggu 5 satu minggu boleh punya unit khusus Academic atau General Training di samping unit bersama (unique index pada minggu dan modul).
+  - Belum ada kolom siklus; siklus 12 minggu kedua dirancang saat dibutuhkan.
+- **`lessons`**: posisi 1–6 (Senin–Jumat, lalu Sabtu untuk checkpoint atau mock), `skill`, `kind`, `content` (objek jsonb), dan `content_version`. Bentuk `content` divalidasi dengan Zod saat isi pelajaran pertama ditulis.
+- **`lesson_progress`**: satu baris per pengguna per pelajaran, dengan ID dari app untuk upsert. `status` bernilai `started` atau `completed`, dan `completed` wajib punya `completed_at`. `score` adalah akurasi practice dalam persen (0–100), dihitung app; ambang review 70% dibaca dari sini.
+- **Akses:** konten bisa dibaca semua pengguna yang login dan hanya bisa diubah admin (`private.is_admin()`). Progres hanya bisa dibaca dan ditulis pemiliknya, dan tidak bisa dihapus dari app. Hapus akun dan hapus pelajaran ikut menghapus progresnya.
 
 ## Gate 0
 

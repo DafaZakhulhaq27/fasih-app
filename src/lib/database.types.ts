@@ -22,6 +22,43 @@ export type Database = {
         };
         Relationships: [];
       };
+      curriculum_units: {
+        Row: {
+          created_at: string;
+          exam: string;
+          focus: NonNullable<Json>;
+          id: string;
+          module: string | null;
+          target_language: string;
+          topic: string;
+          updated_at: string;
+          week: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          exam?: string;
+          focus?: NonNullable<Json>;
+          id?: string;
+          module?: string | null;
+          target_language?: string;
+          topic: string;
+          updated_at?: string;
+          week: number;
+        };
+        Update: {
+          created_at?: string;
+          exam?: string;
+          focus?: NonNullable<Json>;
+          id?: string;
+          module?: string | null;
+          target_language?: string;
+          topic?: string;
+          updated_at?: string;
+          week?: number;
+        };
+        Relationships: [];
+      };
       exam_plans: {
         Row: {
           created_at: string;
@@ -64,6 +101,93 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
+      };
+      lesson_progress: {
+        Row: {
+          completed_at: string | null;
+          created_at: string;
+          id: string;
+          lesson_id: string;
+          score: number | null;
+          status: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          completed_at?: string | null;
+          created_at?: string;
+          id?: string;
+          lesson_id: string;
+          score?: number | null;
+          status?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          created_at?: string;
+          id?: string;
+          lesson_id?: string;
+          score?: number | null;
+          status?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lesson_progress_lesson_id_fkey';
+            columns: ['lesson_id'];
+            isOneToOne: false;
+            referencedRelation: 'lessons';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      lessons: {
+        Row: {
+          content: NonNullable<Json>;
+          content_version: number;
+          created_at: string;
+          id: string;
+          kind: string;
+          position: number;
+          skill: string;
+          unit_id: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          content: NonNullable<Json>;
+          content_version?: number;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          position: number;
+          skill: string;
+          unit_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          content?: NonNullable<Json>;
+          content_version?: number;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          position?: number;
+          skill?: string;
+          unit_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lessons_unit_id_fkey';
+            columns: ['unit_id'];
+            isOneToOne: false;
+            referencedRelation: 'curriculum_units';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       profiles: {
         Row: {
