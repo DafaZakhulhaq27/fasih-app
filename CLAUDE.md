@@ -33,6 +33,7 @@ supabase/
   functions/
     _shared/core/         pure TypeScript shared with the app
     <function-name>/      one folder per Edge Function
+prompts/                  versioned AI prompts (feedback.v1.md, ...); a version is never edited once used
 scripts/                  Node scripts: content generation, TTS audio, eval runner
 eval/                     golden set runner; eval/private/ is git-ignored
 docs/
