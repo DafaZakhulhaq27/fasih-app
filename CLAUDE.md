@@ -87,6 +87,7 @@ Node 22.13 or newer (see `.nvmrc`). Install with `npm ci`; add Expo packages wit
 | RLS tests | `npm run db:test` | pgTAP files in `supabase/tests/`; needs the local stack running |
 | Database types | `npm run db:types` | Regenerates `src/lib/database.types.ts` after a migration; CI fails if it is stale |
 | Local app env | `npx supabase status -o env` | Copy `API_URL` and `PUBLISHABLE_KEY` into `.env.local` (see `.env.example`), then restart the dev server |
+| Local sign-in | "Dev sign-in" button on `/sign-in` | Development builds against a local Supabase only; signs in as `dev@example.test` (created on first use) |
 | Edge Functions | `npx supabase functions serve` | Set up in Fase 0 step 5 |
 | Web deploy | `npx expo export -p web && eas deploy` | Set up in Fase 0 step 4 |
 
