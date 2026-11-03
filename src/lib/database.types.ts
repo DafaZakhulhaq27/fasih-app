@@ -137,6 +137,13 @@ export type Database = {
             referencedRelation: 'attempts';
             referencedColumns: ['id'];
           },
+          {
+            foreignKeyName: 'band_scores_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: false;
+            referencedRelation: 'writing_attempt_stats';
+            referencedColumns: ['attempt_id'];
+          },
         ];
       };
       curriculum_units: {
@@ -258,6 +265,13 @@ export type Database = {
             isOneToOne: true;
             referencedRelation: 'attempts';
             referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'feedback_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: true;
+            referencedRelation: 'writing_attempt_stats';
+            referencedColumns: ['attempt_id'];
           },
         ];
       };
@@ -427,6 +441,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'attempts';
             referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mistakes_attempt_id_fkey';
+            columns: ['attempt_id'];
+            isOneToOne: false;
+            referencedRelation: 'writing_attempt_stats';
+            referencedColumns: ['attempt_id'];
           },
           {
             foreignKeyName: 'mistakes_category_id_fkey';
@@ -674,7 +695,19 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      writing_attempt_stats: {
+        Row: {
+          attempt_id: string;
+          created_at: string;
+          errors_per_100: number | null;
+          mistake_count: number | null;
+          self_band: number | null;
+          user_id: string;
+          word_count: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
     };
     Functions: {
       record_review: {

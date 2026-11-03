@@ -24,7 +24,7 @@ Confirmed in Fase 0 step 1. Routes live in `src/app/`, as in the Expo SDK 58 tem
 
 ```
 src/
-  app/                    Expo Router routes; (app)/ needs a session, (auth)/ is for signed-out users
+  app/                    Expo Router routes; (app)/ needs a session ((app)/(tabs)/ holds the five tabs), (auth)/ is for signed-out users
   theme/                  design tokens: colors, fonts, type sizes, layout values
   components/             shared UI (button, band chips, checkbox, text field, screen header)
   data/                   Supabase reads (TanStack Query hooks) and writes with client-generated ids
