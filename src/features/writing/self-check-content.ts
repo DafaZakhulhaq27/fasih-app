@@ -43,24 +43,8 @@ export const checklist: Record<WritingCriterion, readonly { id: string; label: s
 
 export const bandOptions = [5, 5.5, 6, 6.5, 7, 7.5, 8] as const;
 
-/** Mistake types for self-marking, mapped to the mistake_categories slugs and a subcategory. */
-export const mistakeTypes = [
-  { id: 'verb', label: 'Verb forms and tense', category: 'grammar', subcategory: 'verb form' },
-  { id: 'article', label: 'Articles (a, the)', category: 'grammar', subcategory: 'article' },
-  { id: 'preposition', label: 'Prepositions', category: 'grammar', subcategory: 'preposition' },
-  {
-    id: 'agreement',
-    label: 'Plurals and agreement',
-    category: 'grammar',
-    subcategory: 'agreement',
-  },
-  { id: 'collocation', label: 'Collocations', category: 'collocation', subcategory: null },
-  { id: 'word-choice', label: 'Word choice', category: 'word_choice', subcategory: null },
-  { id: 'spelling', label: 'Spelling', category: 'word_choice', subcategory: 'spelling' },
-  { id: 'linking', label: 'Linking words', category: 'cohesion', subcategory: 'linking word' },
-] as const;
-
-export type MistakeTypeId = (typeof mistakeTypes)[number]['id'];
+// Mistake types live in core so Progress groups mistakes with the same labels.
+export { type MistakeTypeId, mistakeTypes } from '@core/mistake-types.ts';
 
 export const essayTypeLabels: Record<string, string> = {
   opinion: 'Opinion essay',

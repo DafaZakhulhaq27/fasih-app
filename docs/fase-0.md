@@ -196,5 +196,16 @@ Pemilik meminta pekerjaan berjalan otomatis sampai ada yang bisa dicoba di app. 
   - Rating ditulis lewat RPC `record_review` (security definer). Fungsi ini memperbarui kartu dan menambah log dalam satu transaksi, menolak versi kartu yang basi (`conflict`, untuk dua perangkat), dan mengabaikan ID log yang sudah pernah dicatat (`duplicate`), sehingga rating yang terkirim dua kali tercatat sekali.
   - App tidak bisa mengubah kartu atau menulis log secara langsung.
   - `review_cards.context` (jsonb) ditambahkan di luar daftar kolom plan untuk menyimpan kalimat asli.
-- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, dan Mistake Bank/Progress.
+- **Navigasi tab, Progress dan Mistake Bank** (migrasi `progress_views`):
+  - Lima tab mengikuti desain: Today, Learn, Practice, Review, Progress, dengan garis bawah `pencil` di tab aktif. Memakai `expo-router/js-tabs`, karena `Tabs` dari `expo-router` sudah deprecated di SDK 58.
+  - Today mengikuti desain 02 (pelajaran, review, latihan bebas). Learn masih placeholder sampai konten minggu 1–2 ada.
+  - Progress (desain 11):
+    - Band Writing dari rata-rata 3 self-check terakhir, digambar sebagai bar outline berlabel "self-check" supaya tidak tertukar dengan estimasi AI atau skor resmi.
+    - Penanda target dari `exam_plans`, default 7.0.
+    - Grafik errors per 100 words: satu seri, label hanya di titik awal dan akhir, titik bisa diketuk.
+    - Kesalahan per tipe dengan contoh terbaru.
+  - Mistake Bank (`/mistakes`): semua kesalahan aktif, bisa difilter per tipe.
+  - Errors per 100 words dan band per esai dihitung di view SQL `writing_attempt_stats` (`security_invoker`, jadi RLS tetap berlaku), sesuai plan: angka turunan dibaca dari view, tidak disimpan. Test schema kini mewajibkan semua view di `public` memakai `security_invoker`.
+  - Daftar tipe kesalahan dipindah ke core (`mistake-types.ts`), supaya self-check dan Progress memakai label yang sama.
+- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, layar Account (sign out sementara di Today), skor tes resmi Listening/Reading, dan pilihan rentang waktu di Progress.
 - **Seed** berisi tiga soal Task 2 karangan sendiri untuk pengembangan lokal.

@@ -17,6 +17,7 @@ Pure TypeScript shared by the app, the Edge Functions and the Vitest unit tests:
 | `writing-stats.ts` | Self-check signals (words, paragraphs, sentence length range, repeated paragraph openers and phrases) and `ratePer100` |
 | `self-review.ts` | Shape of `attempts.self_review` (ticked checks, own band per criterion) and the overall self band |
 | `fsrs.ts` | ts-fsrs wrapper: new card state, `applyRating`, `previewRatings` for the button labels, `formatInterval`; the state is stored as JSON and read back with Zod |
+| `mistake-types.ts` | Learner-facing mistake types (self-check picker, Progress list), `mistakeTypeLabel` and `groupMistakesByType` |
 | `review-card.ts` | Builds a cloze card from a correction (the corrected sentence with the changed words blanked) and checks a typed answer |
 | `feedback-prompt.ts` | Reads a `prompts/feedback.v*.md` file (version, system and user sections) and fills its placeholders in one pass, keeping student text from closing the `<question>`/`<answer>` tags |
 | `feedback-guard.ts` | Hallucination guard: drops corrections and evidence not found verbatim in the answer, marks criteria without evidence unreliable, applies count limits, reports what it dropped |
