@@ -46,7 +46,9 @@ export default function ReviewScreen(): ReactElement {
 
 type Phase = { kind: 'answer' } | { kind: 'revealed'; typed: string; correct: boolean };
 
-function Session({ cards }: { cards: DueCard[] }): ReactElement {
+function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
+  // Fixed for the whole session: a background refetch would drop rated cards and shift the index.
+  const [cards] = useState(loaded);
   const router = useRouter();
   const queryClient = useQueryClient();
   const [index, setIndex] = useState(0);
