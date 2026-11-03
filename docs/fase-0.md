@@ -189,5 +189,12 @@ Pemilik meminta pekerjaan berjalan otomatis sampai ada yang bisa dicoba di app. 
   - Self-check menampilkan statistik dari kode, checklist per kriteria, band sendiri (5.0–8.0), dan kesalahan yang ditandai sendiri. "I wrote" wajib ada persis di esai, aturan yang sama dengan guard AI.
   - Band keseluruhan dibulatkan seperti tes asli.
   - Saat disimpan, `self_review` masuk ke attempt, lima `band_scores` (`self`) dan baris `mistakes` (`self`) ditulis.
-- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu review dari kesalahan, dan Mistake Bank/Progress.
+- **Review harian (FSRS)** (migrasi `review`, layar `/review`):
+  - Setiap kesalahan yang ditandai saat self-check menjadi kartu cloze: kalimat dari esai dengan bagian yang dikoreksi dikosongkan. Contoh: "In ____ modern world…" → "the".
+  - Kartu diketik dulu, dicek (huruf besar, spasi dan tanda baca akhir diabaikan), lalu dinilai Again/Hard/Good/Easy dengan label interval dari FSRS.
+  - FSRS dihitung di app dengan `ts-fsrs` 5.4.2. Versi 6.0.0 butuh Node ≥ 24, sedangkan proyek memakai Node 22. Target retensi 90%.
+  - Rating ditulis lewat RPC `record_review` (security definer). Fungsi ini memperbarui kartu dan menambah log dalam satu transaksi, menolak versi kartu yang basi (`conflict`, untuk dua perangkat), dan mengabaikan ID log yang sudah pernah dicatat (`duplicate`), sehingga rating yang terkirim dua kali tercatat sekali.
+  - App tidak bisa mengubah kartu atau menulis log secara langsung.
+  - `review_cards.context` (jsonb) ditambahkan di luar daftar kolom plan untuk menyimpan kalimat asli.
+- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, dan Mistake Bank/Progress.
 - **Seed** berisi tiga soal Task 2 karangan sendiri untuk pengembangan lokal.

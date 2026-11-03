@@ -13,6 +13,7 @@ import { Button } from '@/components/button';
 import { Checkbox } from '@/components/checkbox';
 import { ScreenHeader } from '@/components/screen-header';
 import { TextField } from '@/components/text-field';
+import { reviewKeys } from '@/data/review';
 import {
   type MarkedMistake,
   saveSelfCheck,
@@ -136,6 +137,7 @@ function SelfCheck({ attempt }: { attempt: WritingAttempt }): ReactElement {
       ...current,
       {
         id: Crypto.randomUUID(),
+        cardId: Crypto.randomUUID(),
         original,
         corrected,
         categoryId,
@@ -157,6 +159,7 @@ function SelfCheck({ attempt }: { attempt: WritingAttempt }): ReactElement {
     try {
       await saveSelfCheck({
         attemptId: attempt.id,
+        essay: text,
         review: { version: 1, checked: [...checked], bands },
         bands: [
           { id: bandIds.overall, criterion: null, band: overall },
@@ -170,6 +173,7 @@ function SelfCheck({ attempt }: { attempt: WritingAttempt }): ReactElement {
       });
       await queryClient.invalidateQueries({ queryKey: writingKeys.attempt(attempt.id) });
       await queryClient.invalidateQueries({ queryKey: writingKeys.recent });
+      await queryClient.invalidateQueries({ queryKey: reviewKeys.dueCount });
       setSaved(true);
     } catch (e) {
       setSaveError(e instanceof Error ? e.message : 'Could not save the self-check.');

@@ -566,12 +566,130 @@ export type Database = {
         };
         Relationships: [];
       };
+      review_cards: {
+        Row: {
+          back: string;
+          card_type: string;
+          context: NonNullable<Json>;
+          created_at: string;
+          due: string;
+          front: string;
+          fsrs: NonNullable<Json>;
+          id: string;
+          lesson_id: string | null;
+          mistake_id: string | null;
+          target_language: string;
+          updated_at: string;
+          user_id: string;
+          version: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          back: string;
+          card_type: string;
+          context?: NonNullable<Json>;
+          created_at?: string;
+          due: string;
+          front: string;
+          fsrs: NonNullable<Json>;
+          id?: string;
+          lesson_id?: string | null;
+          mistake_id?: string | null;
+          target_language?: string;
+          updated_at?: string;
+          user_id?: string;
+          version?: number;
+        };
+        Update: {
+          back?: string;
+          card_type?: string;
+          context?: NonNullable<Json>;
+          created_at?: string;
+          due?: string;
+          front?: string;
+          fsrs?: NonNullable<Json>;
+          id?: string;
+          lesson_id?: string | null;
+          mistake_id?: string | null;
+          target_language?: string;
+          updated_at?: string;
+          user_id?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'review_cards_lesson_id_fkey';
+            columns: ['lesson_id'];
+            isOneToOne: false;
+            referencedRelation: 'lessons';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'review_cards_mistake_id_fkey';
+            columns: ['mistake_id'];
+            isOneToOne: false;
+            referencedRelation: 'mistakes';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      review_logs: {
+        Row: {
+          card_id: string;
+          created_at: string;
+          fsrs_log: NonNullable<Json>;
+          id: string;
+          rating: number;
+          reviewed_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          card_id: string;
+          created_at?: string;
+          fsrs_log: NonNullable<Json>;
+          id: string;
+          rating: number;
+          reviewed_at: string;
+          user_id: string;
+        };
+        Update: {
+          card_id?: string;
+          created_at?: string;
+          fsrs_log?: NonNullable<Json>;
+          id?: string;
+          rating?: number;
+          reviewed_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'review_logs_card_id_fkey';
+            columns: ['card_id'];
+            isOneToOne: false;
+            referencedRelation: 'review_cards';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      record_review: {
+        Args: {
+          p_card_id: string;
+          p_due: string;
+          p_expected_version: number;
+          p_fsrs: Json;
+          p_fsrs_log: Json;
+          p_log_id: string;
+          p_rating: number;
+          p_reviewed_at: string;
+        };
+        Returns: Json;
+      };
     };
     Enums: {
       [_ in never]: never;

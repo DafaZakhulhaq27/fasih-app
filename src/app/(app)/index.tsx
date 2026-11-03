@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '@/auth/session-provider';
 import { Button } from '@/components/button';
 import { Wordmark } from '@/components/wordmark';
+import { useDueCount } from '@/data/review';
 import { type RecentWritingAttempt, useRecentWritingAttempts } from '@/data/writing';
 import { supabase } from '@/lib/supabase';
 import { borderWidth, colors, gutter, radius, tabularNums, textStyles, touchTarget } from '@/theme';
@@ -15,6 +16,7 @@ export default function TodayScreen(): ReactElement {
   const router = useRouter();
   const { session } = useSession();
   const recent = useRecentWritingAttempts();
+  const dueCount = useDueCount();
   const [signingOut, setSigningOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,6 +51,28 @@ export default function TodayScreen(): ReactElement {
               Practice
             </Text>
             <Button label="Write a Task 2 essay" onPress={() => router.push('/write')} />
+          </View>
+
+          <View style={styles.section}>
+            <Text accessibilityRole="header" style={styles.sectionTitle}>
+              Review
+            </Text>
+            <Text style={styles.body}>
+              {dueCount.isPending
+                ? 'Counting your cards…'
+                : dueCount.isError
+                  ? `Could not count your cards: ${dueCount.error.message}`
+                  : dueCount.data === 0
+                    ? 'Nothing due. Mistakes you mark in a self-check become review cards.'
+                    : `${dueCount.data} card${dueCount.data === 1 ? '' : 's'} due now.`}
+            </Text>
+            {dueCount.data ? (
+              <Button
+                variant="secondary"
+                label="Start review"
+                onPress={() => router.push('/review')}
+              />
+            ) : null}
           </View>
 
           <View style={styles.section}>
