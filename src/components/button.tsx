@@ -29,7 +29,8 @@ export function Button({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ disabled: inactive, busy }}
+      aria-disabled={inactive}
+      aria-busy={busy}
       accessibilityHint={accessibilityHint}
       disabled={inactive}
       onPress={onPress}

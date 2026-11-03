@@ -24,7 +24,8 @@ export function GoogleSignInButton({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Sign in with Google"
-      accessibilityState={{ disabled: busy, busy }}
+      aria-disabled={busy}
+      aria-busy={busy}
       disabled={busy}
       onPress={onPress}
       onFocus={() => setFocused(true)}

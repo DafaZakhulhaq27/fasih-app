@@ -173,3 +173,21 @@ Keputusan (tabel, dikerjakan lebih dulu sambil menunggu Langkah 0):
 - [ ] Eval v1 berjalan dan hasilnya tersimpan (Langkah 6).
 
 Setelah Gate 0, lanjut ke Fase 1 sesuai roadmap di `docs/plan.md`.
+
+## Dikerjakan lebih awal dari Fase 1 (sambil menunggu Langkah 0)
+
+Pemilik meminta pekerjaan berjalan otomatis sampai ada yang bisa dicoba di app. Bagian Fase 0 yang tersisa butuh akun dan kredensial pemilik, jadi alur Writing Task 2 versi tanpa AI dari Fase 1 dikerjakan lebih dulu.
+
+- **Tabel latihan** (migrasi `practice`):
+  - `prompts` dan `mistake_categories`; kategori bahasa Inggris di-seed sama dengan kategori di schema feedback.
+  - `practice_sessions` dan `attempts` (status `draft → pending → done/failed`).
+  - `feedback` (hanya dibaca app), `band_scores` dan `mistakes`.
+  - App hanya boleh menulis band `self`/`checkpoint`/`mock` dan kesalahan `self`/`lesson`; estimasi AI, kesalahan AI dan metrik speaking hanya ditulis server.
+  - Status `draft` ditambahkan di luar daftar plan (`pending`, `done`, `failed`) untuk esai yang masih ditulis.
+- **Alur Writing Task 2 + self-check** (`/write`, `/write/[attemptId]`, `/write/[attemptId]/self-check`):
+  - Pilih soal, lalu menulis dengan timer 40 menit yang terus berjalan meski halaman ditutup, penghitung kata dari `LanguagePack`, spell-check/autocorrect/autocomplete mati, dan autosave.
+  - Self-check menampilkan statistik dari kode, checklist per kriteria, band sendiri (5.0–8.0), dan kesalahan yang ditandai sendiri. "I wrote" wajib ada persis di esai, aturan yang sama dengan guard AI.
+  - Band keseluruhan dibulatkan seperti tes asli.
+  - Saat disimpan, `self_review` masuk ke attempt, lima `band_scores` (`self`) dan baris `mistakes` (`self`) ditulis.
+- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu review dari kesalahan, dan Mistake Bank/Progress.
+- **Seed** berisi tiga soal Task 2 karangan sendiri untuk pengembangan lokal.
