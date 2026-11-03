@@ -6,11 +6,13 @@ import { borderWidth, colors, focusRingWidth, radius, textStyles } from '@/theme
 type ButtonProps = {
   label: string;
   onPress: () => void;
-  /** Primary = ink fill. Secondary = ink outline on surface. */
-  variant?: 'primary' | 'secondary';
+  /** Primary = ink fill. Secondary = ink outline on surface. Danger = destructive actions only. */
+  variant?: 'primary' | 'secondary' | 'danger';
   disabled?: boolean;
   /** Shows a spinner and blocks presses while an action runs. */
   busy?: boolean;
+  /** A longer name when the visible label is ambiguous, e.g. "Remove friend@example.test". */
+  accessibilityLabel?: string;
   accessibilityHint?: string;
 };
 
@@ -20,15 +22,18 @@ export function Button({
   variant = 'primary',
   disabled = false,
   busy = false,
+  accessibilityLabel,
   accessibilityHint,
 }: ButtonProps): ReactElement {
   const [focused, setFocused] = useState(false);
   const inactive = disabled || busy;
-  const textColor = variant === 'primary' ? colors.surface : colors.ink;
+  const textColor =
+    variant === 'primary' ? colors.surface : variant === 'danger' ? colors.danger : colors.ink;
 
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
       aria-disabled={inactive}
       aria-busy={busy}
       accessibilityHint={accessibilityHint}
@@ -38,7 +43,7 @@ export function Button({
       onBlur={() => setFocused(false)}
       style={({ pressed }) => [
         styles.base,
-        variant === 'primary' ? styles.primary : styles.secondary,
+        styles[variant],
         pressed && styles.pressed,
         inactive && styles.inactive,
         focused && styles.focused,
@@ -67,6 +72,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderWidth: borderWidth.control,
     borderColor: colors.ink,
+  },
+  danger: {
+    backgroundColor: colors.surface,
+    borderWidth: borderWidth.control,
+    borderColor: colors.danger,
   },
   pressed: {
     opacity: 0.85,

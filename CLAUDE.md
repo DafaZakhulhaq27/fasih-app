@@ -91,10 +91,11 @@ Node 22.13 or newer (see `.nvmrc`). Install with `npm ci`; add Expo packages wit
 | Database types | `npm run db:types` | Regenerates `src/lib/database.types.ts` after a migration; CI fails if it is stale |
 | Local app env | `npx supabase status -o env` | Copy `API_URL` and `PUBLISHABLE_KEY` into `.env.local` (see `.env.example`), then restart the dev server |
 | Local sign-in | "Dev sign-in" button on `/sign-in` | Development builds against a local Supabase only; signs in as `dev@example.test` (created on first use) |
-| Edge Functions | `npx supabase functions serve` | Set up in Fase 0 step 5 |
+| Edge Functions | `npx supabase functions serve` | `supabase start` already serves every folder in `supabase/functions/` at http://127.0.0.1:54321/functions/v1/<name>; run this to pick up a folder added after the stack started, with logs in the terminal |
+| Edge Function tests | `npm run test:functions` | `scripts/test-functions.mjs` against the local stack; creates and deletes its own `example.test` user |
 | Web deploy | `npx expo export -p web && eas deploy` | Set up in Fase 0 step 4 |
 
-CI (`.github/workflows/ci.yml`) runs typecheck, lint and unit tests, and in a second job starts Supabase, resets the database twice and runs the RLS tests, on every push and pull request.
+CI (`.github/workflows/ci.yml`) runs typecheck, lint and unit tests, and in a second job starts Supabase, resets the database twice, runs the RLS tests and the Edge Function tests, on every push and pull request.
 
 ## Working with the owner
 

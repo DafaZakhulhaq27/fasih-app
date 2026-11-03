@@ -1,14 +1,23 @@
 import { useRouter } from 'expo-router';
 import { useState, type ReactElement, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/auth/session-provider';
 import { Button } from '@/components/button';
+import { useExamPlan, useProfile } from '@/data/account';
 import { useTargetBand } from '@/data/progress';
 import { useDueCount } from '@/data/review';
-import { supabase } from '@/lib/supabase';
-import { borderWidth, colors, fonts, gutter, radius, textStyles } from '@/theme';
+import {
+  borderWidth,
+  colors,
+  focusRingWidth,
+  fonts,
+  gutter,
+  radius,
+  textStyles,
+  touchTarget,
+} from '@/theme';
 
 // docs/design/screens/02-main.png. The lesson slot waits for the week 1-2 content (Fase 0 step 8).
 export default function TodayScreen(): ReactElement {
@@ -16,20 +25,12 @@ export default function TodayScreen(): ReactElement {
   const { session } = useSession();
   const dueCount = useDueCount();
   const target = useTargetBand();
-  const [signingOut, setSigningOut] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const profile = useProfile();
+  const plan = useExamPlan();
+  const [avatarFocused, setAvatarFocused] = useState(false);
 
-  async function handleSignOut(): Promise<void> {
-    setSigningOut(true);
-    setError(null);
-    // The session provider sees SIGNED_OUT and the route guard returns to sign-in.
-    const { error: signOutError } = await supabase.auth.signOut();
-    if (signOutError) {
-      setError(`Could not sign out: ${signOutError.message}`);
-      setSigningOut(false);
-    }
-  }
-
+  const name = profile.data?.display_name ?? session?.user.email ?? '';
+  const mockDays = daysUntil(plan.data?.final_mock_date ?? null);
   const due = dueCount.data ?? 0;
   const today = new Date().toLocaleDateString('en-GB', {
     weekday: 'short',
@@ -41,12 +42,26 @@ export default function TodayScreen(): ReactElement {
     <SafeAreaView edges={['top']} style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.column}>
-          <Text style={styles.date}>{today}</Text>
+          <View style={styles.top}>
+            <Text style={styles.date}>{today}</Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Account"
+              onPress={() => router.push('/account')}
+              onFocus={() => setAvatarFocused(true)}
+              onBlur={() => setAvatarFocused(false)}
+              style={[styles.avatar, avatarFocused && styles.avatarFocused]}
+            >
+              <Text style={styles.avatarText}>{(name[0] ?? '?').toUpperCase()}</Text>
+            </Pressable>
+          </View>
           <Text accessibilityRole="header" style={styles.title}>
             Today&apos;s page
           </Text>
           {target.data !== undefined ? (
-            <Text style={styles.hand}>Target {target.data.toFixed(1)}.</Text>
+            <Text style={styles.hand}>
+              Target {target.data.toFixed(1)}.{mockDays !== null ? ` ${mockText(mockDays)}` : ''}
+            </Text>
           ) : null}
 
           <View style={styles.page}>
@@ -88,19 +103,31 @@ export default function TodayScreen(): ReactElement {
               </View>
             </Entry>
           </View>
-
-          <Text style={styles.signedIn}>Signed in as {session?.user.email}.</Text>
-          {error ? (
-            <Text accessibilityRole="alert" style={styles.body}>
-              {error}
-            </Text>
-          ) : null}
-          {/* Sign out moves to the Account screen (13-account) once it exists. */}
-          <Button variant="secondary" label="Sign out" busy={signingOut} onPress={handleSignOut} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+/** Whole days from today to a YYYY-MM-DD date, in the device's time zone; null without a date. */
+function daysUntil(date: string | null): number | null {
+  if (!date) {
+    return null;
+  }
+  const [year, month, day] = date.split('-').map(Number);
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((new Date(year, month - 1, day).getTime() - start.getTime()) / 86_400_000);
+}
+
+function mockText(days: number): string {
+  if (days < 0) {
+    return 'Final mock done.';
+  }
+  if (days === 0) {
+    return 'Final mock today.';
+  }
+  return `Final mock in ${days} day${days === 1 ? '' : 's'}.`;
 }
 
 function Entry({
@@ -142,9 +169,35 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: 12,
   },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
   date: {
     ...textStyles.bodySmall,
     color: colors.ink2,
+  },
+  avatar: {
+    width: touchTarget,
+    height: touchTarget,
+    borderRadius: touchTarget / 2,
+    borderWidth: borderWidth.control,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarFocused: {
+    outlineColor: colors.pencil,
+    outlineStyle: 'solid',
+    outlineWidth: focusRingWidth,
+    outlineOffset: 2,
+  },
+  avatarText: {
+    ...textStyles.bodyStrong,
+    color: colors.ink,
   },
   title: {
     ...textStyles.pageTitle,
@@ -205,10 +258,5 @@ const styles = StyleSheet.create({
   actions: {
     marginTop: 8,
     alignSelf: 'flex-start',
-  },
-  signedIn: {
-    ...textStyles.caption,
-    marginTop: 12,
-    color: colors.ink2,
   },
 });
