@@ -23,9 +23,12 @@ export function useProfile(): UseQueryResult<Profile> {
   return useQuery({
     queryKey: accountKeys.profile,
     queryFn: async () => {
+      // Filtered by id so the query stays correct if admins can ever read other profiles.
+      const { data: auth } = await supabase.auth.getSession();
       const { data, error } = await supabase
         .from('profiles')
         .select('id, display_name, role, ai_enabled, default_check, explain_lang')
+        .eq('id', auth.session?.user.id ?? '')
         .single();
       if (error) {
         throw error;
