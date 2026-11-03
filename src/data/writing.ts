@@ -1,3 +1,6 @@
+import { newCardState } from '@core/fsrs.ts';
+import { getLanguagePack } from '@core/language-pack.ts';
+import { buildCorrectionCard } from '@core/review-card.ts';
 import type { SelfReview } from '@core/self-review.ts';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import * as Crypto from 'expo-crypto';
@@ -5,6 +8,8 @@ import { z } from 'zod';
 
 import type { Tables } from '@/lib/database.types';
 import { supabase } from '@/lib/supabase';
+
+const en = getLanguagePack('en');
 
 // Writing Task 2 reads and writes. IDs are generated here and written with
 // "on conflict do nothing", so a retried write never creates a duplicate (CLAUDE.md rule 7).
@@ -211,6 +216,8 @@ export async function saveEssay(
 
 export type MarkedMistake = {
   id: string;
+  /** Id of the review card made from this mistake, reused on retry. */
+  cardId: string;
   original: string;
   corrected: string;
   categoryId: string;
@@ -219,6 +226,8 @@ export type MarkedMistake = {
 
 export type SelfCheckSave = {
   attemptId: string;
+  /** The essay, so each review card can show the sentence the mistake came from. */
+  essay: string;
   review: SelfReview;
   /** One row per criterion plus the overall band (criterion null); ids are reused on retry. */
   bands: { id: string; criterion: string | null; band: number }[];
@@ -262,6 +271,28 @@ export async function saveSelfCheck(save: SelfCheckSave): Promise<void> {
     );
     if (mistakes.error) {
       throw mistakes.error;
+    }
+    // Every recorded mistake becomes at least one review card (docs/plan.md acceptance criteria).
+    const now = new Date();
+    const cards = await supabase.from('review_cards').upsert(
+      save.mistakes.map((mistake) => {
+        const card = buildCorrectionCard(en, save.essay, mistake.original, mistake.corrected);
+        const schedule = newCardState(now);
+        return {
+          id: mistake.cardId,
+          mistake_id: mistake.id,
+          card_type: card.cardType,
+          front: card.front,
+          back: card.back,
+          context: { ...card.context, source: 'writing_task2' },
+          due: schedule.due,
+          fsrs: schedule.fsrs,
+        };
+      }),
+      { onConflict: 'id', ignoreDuplicates: true },
+    );
+    if (cards.error) {
+      throw cards.error;
     }
   }
 }
