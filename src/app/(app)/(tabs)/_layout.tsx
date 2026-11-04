@@ -9,7 +9,8 @@ import {
   ReviewIcon,
   TodayIcon,
 } from '@/components/tab-icons';
-import { colors, fonts, textStyles } from '@/theme';
+import { MotionView, useStateTransition } from '@/components/motion';
+import { colors, fonts, motion, textStyles } from '@/theme';
 
 // Five tabs; the active one gets a short pencil underline (docs/design/README.md "Tab bar").
 export default function TabsLayout(): ReactElement {
@@ -39,13 +40,33 @@ function tab(
   return {
     title,
     tabBarIcon: ({ color }) => <Icon color={color} />,
-    tabBarLabel: ({ focused, color }) => (
-      <View style={styles.labelBox}>
-        <Text style={[styles.label, { color }, focused && styles.labelActive]}>{title}</Text>
-        <View style={[styles.underline, focused && styles.underlineActive]} />
-      </View>
-    ),
+    tabBarLabel: ({ focused, color }) => <TabLabel title={title} focused={focused} color={color} />,
   };
+}
+
+/** The pencil underline draws out from the middle when a tab becomes active. */
+function TabLabel({
+  title,
+  focused,
+  color,
+}: {
+  title: string;
+  focused: boolean;
+  color: ColorValue;
+}): ReactElement {
+  const draw = useStateTransition(['transform', 'opacity'], motion.enter);
+  return (
+    <View style={styles.labelBox}>
+      <Text style={[styles.label, { color }, focused && styles.labelActive]}>{title}</Text>
+      <MotionView
+        style={[
+          styles.underline,
+          { opacity: focused ? 1 : 0, transform: [{ scaleX: focused ? 1 : 0.2 }] },
+          draw,
+        ]}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -69,9 +90,6 @@ const styles = StyleSheet.create({
     width: 22,
     height: 3,
     borderRadius: 2,
-    backgroundColor: 'transparent',
-  },
-  underlineActive: {
     backgroundColor: colors.pencil,
   },
 });

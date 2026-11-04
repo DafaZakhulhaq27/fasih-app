@@ -3,11 +3,20 @@ import { checkClozeAnswer, CLOZE_GAP } from '@core/review-card.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import * as Crypto from 'expo-crypto';
 import { useRouter } from 'expo-router';
-import { useRef, useState, type ReactElement } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useRef, useState, type ReactElement, type ReactNode } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
+import {
+  FadeUp,
+  MotionPressable,
+  MotionView,
+  useEnterAnimation,
+  usePressFeedback,
+  useShake,
+  useStateTransition,
+} from '@/components/motion';
 import { ScreenHeader } from '@/components/screen-header';
 import { TextField } from '@/components/text-field';
 import { type DueCard, recordReview, reviewKeys, useDueCards } from '@/data/review';
@@ -17,6 +26,7 @@ import {
   colors,
   fonts,
   gutter,
+  motion,
   radius,
   tabularNums,
   textStyles,
@@ -59,6 +69,8 @@ function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
   const [reviewed, setReviewed] = useState(0);
   // One log id per card, so retrying a failed send never records the rating twice.
   const logIds = useRef(new Map<string, string>());
+  const progress = useStateTransition(['width'], motion.enter);
+  const press = usePressFeedback({ dim: true, disabled: saving });
 
   const done = index >= cards.length;
 
@@ -131,12 +143,14 @@ function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
             accessibilityValue={{ min: 0, max: cards.length, now: index }}
             style={styles.track}
           >
-            <View style={[styles.fill, { width: `${(index / cards.length) * 100}%` }]} />
+            <MotionView
+              style={[styles.fill, { width: `${(index / cards.length) * 100}%` }, progress]}
+            />
           </View>
 
           <Text style={styles.caption}>{sourceLine(card)}</Text>
 
-          <View style={styles.card}>
+          <CardSheet key={card.id} wrong={phase.kind === 'revealed' && !phase.correct}>
             <View style={styles.marginLine} />
             <Text style={styles.sentence}>
               {before}
@@ -165,7 +179,7 @@ function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
                 <Button label="Check" onPress={check} />
               </View>
             ) : (
-              <View style={styles.result}>
+              <FadeUp style={styles.result}>
                 <Text accessibilityRole="alert" style={styles.resultLine}>
                   {phase.correct
                     ? `✓ You typed “${phase.typed}”. Correct.`
@@ -178,9 +192,9 @@ function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
                     Originally you wrote “{card.context.originalSentence.replace(/[.!?]+$/, '')}”.
                   </Text>
                 ) : null}
-              </View>
+              </FadeUp>
             )}
-          </View>
+          </CardSheet>
 
           {message ? (
             <Text accessibilityRole="alert" style={styles.message}>
@@ -189,30 +203,38 @@ function Session({ cards: loaded }: { cards: DueCard[] }): ReactElement {
           ) : null}
 
           {preview ? (
-            <View style={styles.rateBlock}>
+            <FadeUp delay={motion.stagger * 2} style={styles.rateBlock}>
               <Text style={styles.rateTitle}>When should this card come back?</Text>
               <View style={styles.rateRow}>
                 {reviewRatings.map((rating) => (
-                  <Pressable
+                  <MotionPressable
                     key={rating}
                     accessibilityRole="button"
                     accessibilityLabel={`${ratingLabels[rating]}, back in ${preview[rating].interval}`}
                     aria-disabled={saving}
                     disabled={saving}
                     onPress={() => rate(rating)}
-                    style={({ pressed }) => [styles.rateButton, (pressed || saving) && styles.dim]}
+                    dataSet={press.dataSet}
+                    style={[styles.rateButton, press.style, saving && styles.dim]}
                   >
                     <Text style={styles.rateLabel}>{ratingLabels[rating]}</Text>
                     <Text style={styles.rateInterval}>{preview[rating].interval}</Text>
-                  </Pressable>
+                  </MotionPressable>
                 ))}
               </View>
-            </View>
+            </FadeUp>
           ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+// Each new card slides in from the end side, like turning to the next page.
+function CardSheet({ wrong, children }: { wrong: boolean; children: ReactNode }): ReactElement {
+  const enter = useEnterAnimation('slideFromEnd');
+  const shake = useShake(wrong);
+  return <MotionView style={[styles.card, shake ?? enter]}>{children}</MotionView>;
 }
 
 function splitGap(front: string): [string, string] {
@@ -245,12 +267,12 @@ function Centered({
 }): ReactElement {
   return (
     <SafeAreaView style={[styles.safeArea, styles.center]}>
-      <View style={styles.centerColumn}>
+      <FadeUp style={styles.centerColumn}>
         <Text accessibilityRole={alert ? 'alert' : undefined} style={styles.centerText}>
           {text}
         </Text>
         {children}
-      </View>
+      </FadeUp>
     </SafeAreaView>
   );
 }

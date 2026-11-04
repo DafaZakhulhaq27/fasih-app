@@ -1,6 +1,7 @@
 import { useState, type ReactElement } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 
+import { MotionPressable, usePressFeedback } from '@/components/motion';
 import { borderWidth, colors, focusRingWidth, radius, textStyles } from '@/theme';
 
 type ButtonProps = {
@@ -27,13 +28,15 @@ export function Button({
 }: ButtonProps): ReactElement {
   const [focused, setFocused] = useState(false);
   const inactive = disabled || busy;
+  const press = usePressFeedback({ dim: true, disabled: inactive });
   const textColor =
     variant === 'primary' ? colors.surface : variant === 'danger' ? colors.danger : colors.ink;
 
   return (
-    <Pressable
+    <MotionPressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      dataSet={press.dataSet}
       aria-disabled={inactive}
       aria-busy={busy}
       accessibilityHint={accessibilityHint}
@@ -41,17 +44,17 @@ export function Button({
       onPress={onPress}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      style={({ pressed }) => [
+      style={[
         styles.base,
         styles[variant],
-        pressed && styles.pressed,
+        press.style,
         inactive && styles.inactive,
         focused && styles.focused,
       ]}
     >
       {busy ? <ActivityIndicator color={textColor} /> : null}
       <Text style={[styles.label, { color: textColor }]}>{label}</Text>
-    </Pressable>
+    </MotionPressable>
   );
 }
 
@@ -77,9 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderWidth: borderWidth.control,
     borderColor: colors.danger,
-  },
-  pressed: {
-    opacity: 0.85,
   },
   inactive: {
     opacity: 0.6,

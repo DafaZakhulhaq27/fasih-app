@@ -7,8 +7,9 @@ import { devSignIn, devSignInAvailable } from '@/auth/dev-sign-in';
 import { signInWithGoogle } from '@/auth/google-sign-in';
 import { Button } from '@/components/button';
 import { GoogleSignInButton } from '@/components/google-sign-in-button';
+import { FadeUp } from '@/components/motion';
 import { Wordmark } from '@/components/wordmark';
-import { borderWidth, colors, fonts, gutter, radius, textStyles } from '@/theme';
+import { borderWidth, colors, fonts, gutter, motion, radius, textStyles } from '@/theme';
 
 // docs/design/screens/01-signin.png
 export default function SignInScreen(): ReactElement {
@@ -68,7 +69,9 @@ export default function SignInScreen(): ReactElement {
           <Text style={styles.lead}>
             A 12-week plan, honest band estimates, and a review deck built from what you got wrong.
           </Text>
-          <CorrectionExample />
+          <FadeUp delay={motion.enter}>
+            <CorrectionExample />
+          </FadeUp>
 
           <View style={styles.actions}>
             {message ? (
@@ -134,7 +137,10 @@ function CorrectionExample(): ReactElement {
         Coding <Text style={styles.struck}>teach</Text>{' '}
         <Text style={styles.insertion}>teaches</Text> children to think logically.
       </Text>
-      <Text style={styles.note}>One activity, so the verb takes -s.</Text>
+      {/* The teacher's note arrives a beat after the card, like a second pen stroke. */}
+      <FadeUp delay={motion.enter + motion.draw}>
+        <Text style={styles.note}>One activity, so the verb takes -s.</Text>
+      </FadeUp>
     </View>
   );
 }

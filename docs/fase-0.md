@@ -215,5 +215,10 @@ Pemilik meminta pekerjaan berjalan otomatis sampai ada yang bisa dicoba di app. 
   - Hapus akun: konfirmasi dengan mengetik "delete", lalu Edge Function `delete-account` menghapus file audio user di bucket `audio`, kemudian user Auth; semua tabel ikut terhapus lewat `on delete cascade`. Function menolak request tanpa sesi (401), tanpa konfirmasi (400) dan selain POST (405). Diuji `npm run test:functions`, juga di CI.
   - Rencana ujian disimpan dengan ID dari app dan upsert per kolom, sehingga dua perubahan cepat sebelum rencana ada tidak membuat dua baris.
   - Disederhanakan dari desain 13: pilihan diletakkan langsung di kartu (bukan halaman detail), target band 5.5–8.0 supaya muat satu baris di HP 375pt, kartu "AI checks today" menunggu kuota AI, dan Sync hanya berupa catatan sampai antrean offline ada. Belum ada tautan kebijakan privasi.
+- **Animasi** (`src/theme/motion.ts`, `src/components/motion.tsx` + `motion.web.tsx`, aturan di `docs/design/README.md` bagian Motion):
+  - Tombol dan chip mengecil sedikit saat ditekan, thumb segmented bergeser, garis bawah tab tergambar, centang checkbox muncul, bar Progress tumbuh, kartu dan bagian layar muncul naik, kartu review masuk dari samping dan bergoyang saat jawaban salah, dan di sign-in garis pena wordmark "ditulis".
+  - Mengikuti setelan Reduce Motion sistem: tanpa gerakan, tombol hanya meredup.
+  - iOS/Android memakai Reanimated (UI thread). Web memakai CSS bawaan react-native-web, karena Reanimated menambah sekitar 670 KB JavaScript (+141 KB gzip) ke bundle web. Dengan pemisahan ini bundle web hanya naik sekitar 4 KB gzip.
+  - Baru dicek di web. Bundle Android berhasil dibuat, tapi animasinya belum dicoba di HP atau simulator (Mac ini belum punya runtime iOS Simulator).
 - **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, skor tes resmi Listening/Reading, dan pilihan rentang waktu di Progress.
 - **Seed** berisi tiga soal Task 2 karangan sendiri untuk pengembangan lokal.

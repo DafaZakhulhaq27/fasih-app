@@ -1,7 +1,8 @@
 import { useState, type ReactElement } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { I18nManager, Pressable, StyleSheet, View } from 'react-native';
 
-import { colors, focusRingWidth, fonts, radius, textStyles, touchTarget } from '@/theme';
+import { MotionText, MotionView, useStateTransition } from '@/components/motion';
+import { colors, focusRingWidth, fonts, motion, radius, textStyles, touchTarget } from '@/theme';
 
 type SegmentedProps<T extends string> = {
   /** Names the group for screen readers. */
@@ -12,7 +13,13 @@ type SegmentedProps<T extends string> = {
   disabled?: boolean;
 };
 
-/** Wash track, the selected segment on surface with a light shadow (docs/design/README.md). */
+const TRACK_PADDING = 4;
+const GAP = 4;
+
+/**
+ * Wash track, the selected segment on surface with a light shadow (docs/design/README.md). The
+ * surface is one thumb that slides to the chosen segment.
+ */
 export function Segmented<T extends string>({
   label,
   options,
@@ -21,9 +28,36 @@ export function Segmented<T extends string>({
   disabled = false,
 }: SegmentedProps<T>): ReactElement {
   const [focused, setFocused] = useState<T | null>(null);
+  const [trackWidth, setTrackWidth] = useState(0);
+  const slide = useStateTransition(['transform'], motion.enter);
+  const textFill = useStateTransition(['color']);
+
+  const selectedIndex = options.findIndex((option) => option.value === value);
+  const segmentWidth =
+    (trackWidth - TRACK_PADDING * 2 - GAP * (options.length - 1)) / options.length;
+  const offset = selectedIndex * (segmentWidth + GAP);
 
   return (
-    <View accessibilityRole="radiogroup" accessibilityLabel={label} style={styles.track}>
+    <View
+      accessibilityRole="radiogroup"
+      accessibilityLabel={label}
+      onLayout={(event) => setTrackWidth(event.nativeEvent.layout.width)}
+      style={styles.track}
+    >
+      {trackWidth > 0 && selectedIndex >= 0 ? (
+        <MotionView
+          aria-hidden
+          pointerEvents="none"
+          style={[
+            styles.thumb,
+            {
+              width: segmentWidth,
+              transform: [{ translateX: I18nManager.isRTL ? -offset : offset }],
+            },
+            slide,
+          ]}
+        />
+      ) : null}
       {options.map((option) => {
         const selected = option.value === value;
         return (
@@ -37,13 +71,11 @@ export function Segmented<T extends string>({
             onPress={() => onChange(option.value)}
             onFocus={() => setFocused(option.value)}
             onBlur={() => setFocused(null)}
-            style={[
-              styles.segment,
-              selected && styles.selected,
-              focused === option.value && styles.focused,
-            ]}
+            style={[styles.segment, focused === option.value && styles.focused]}
           >
-            <Text style={[styles.text, selected && styles.selectedText]}>{option.label}</Text>
+            <MotionText style={[styles.text, selected && styles.selectedText, textFill]}>
+              {option.label}
+            </MotionText>
           </Pressable>
         );
       })}
@@ -54,10 +86,23 @@ export function Segmented<T extends string>({
 const styles = StyleSheet.create({
   track: {
     flexDirection: 'row',
-    padding: 4,
-    gap: 4,
+    padding: TRACK_PADDING,
+    gap: GAP,
     borderRadius: radius.segmented,
     backgroundColor: colors.wash,
+  },
+  thumb: {
+    position: 'absolute',
+    top: TRACK_PADDING,
+    bottom: TRACK_PADDING,
+    start: TRACK_PADDING,
+    borderRadius: radius.segmented - 4,
+    backgroundColor: colors.surface,
+    shadowColor: colors.ink,
+    shadowOpacity: 0.12,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
   },
   segment: {
     flex: 1,
@@ -66,14 +111,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 8,
     borderRadius: radius.segmented - 4,
-  },
-  selected: {
-    backgroundColor: colors.surface,
-    shadowColor: colors.ink,
-    shadowOpacity: 0.12,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 1,
   },
   focused: {
     outlineColor: colors.pencil,

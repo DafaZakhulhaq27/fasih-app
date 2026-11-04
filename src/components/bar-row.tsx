@@ -1,7 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, tabularNums, textStyles } from '@/theme';
+import { growOrigin, MotionView, useEnterAnimation } from '@/components/motion';
+import { colors, motion, tabularNums, textStyles } from '@/theme';
 
 type BarRowProps = {
   title: string;
@@ -13,6 +14,8 @@ type BarRowProps = {
   target?: number;
   /** "self-check" bars are outlined so they never read as official or AI results. */
   kind?: 'solid' | 'self-check';
+  /** Position among bars shown together; later bars start growing a little later. */
+  index?: number;
   children?: ReactNode;
 };
 
@@ -23,9 +26,15 @@ export function BarRow({
   fraction,
   target,
   kind = 'solid',
+  index = 0,
   children,
 }: BarRowProps): ReactElement {
   const width = `${Math.max(0, Math.min(1, fraction)) * 100}%` as const;
+  // The bar grows from the start of the track when it first appears.
+  const enter = useEnterAnimation('grow', {
+    delay: index * motion.stagger,
+    duration: motion.draw,
+  });
   return (
     <View style={styles.row}>
       <View style={styles.titleRow}>
@@ -33,7 +42,14 @@ export function BarRow({
         <Text style={styles.value}>{value}</Text>
       </View>
       <View style={styles.track}>
-        <View style={[styles.fill, kind === 'self-check' && styles.fillSelfCheck, { width }]} />
+        <MotionView
+          style={[
+            styles.fill,
+            kind === 'self-check' && styles.fillSelfCheck,
+            { width, transformOrigin: growOrigin },
+            enter,
+          ]}
+        />
         {target !== undefined ? (
           <View style={[styles.tick, { start: `${target * 100}%` }]} />
         ) : null}
