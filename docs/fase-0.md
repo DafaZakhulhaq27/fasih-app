@@ -207,5 +207,13 @@ Pemilik meminta pekerjaan berjalan otomatis sampai ada yang bisa dicoba di app. 
   - Mistake Bank (`/mistakes`): semua kesalahan aktif, bisa difilter per tipe.
   - Errors per 100 words dan band per esai dihitung di view SQL `writing_attempt_stats` (`security_invoker`, jadi RLS tetap berlaku), sesuai plan: angka turunan dibaca dari view, tidak disimpan. Test schema kini mewajibkan semua view di `public` memakai `security_invoker`.
   - Daftar tipe kesalahan dipindah ke core (`mistake-types.ts`), supaya self-check dan Progress memakai label yang sama.
-- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, layar Account (sign out sementara di Today), skor tes resmi Listening/Reading, dan pilihan rentang waktu di Progress.
+- **Layar Account dan hapus akun** (`/account`, Edge Function `delete-account`):
+  - Dibuka dari avatar di Today (desain 02). Sign out pindah dari Today ke Account.
+  - Rencana IELTS: modul (Academic / General Training / belum dipilih), target band, tanggal final mock, bahasa belajar (English). Today menampilkan "Final mock in N days" bila tanggal diisi; jumlah hari dihitung di kode.
+  - Cek jawaban: mode default (self-check / AI feedback), izin kirim jawaban ke AI (`ai_enabled`), bahasa penjelasan (English / Indonesian). Ditulis langsung ke `profiles` lewat grant kolom yang sudah ada.
+  - Admin: daftar undangan, tambah (email dirapikan ke huruf kecil dan divalidasi Zod) dan hapus.
+  - Hapus akun: konfirmasi dengan mengetik "delete", lalu Edge Function `delete-account` menghapus file audio user di bucket `audio`, kemudian user Auth; semua tabel ikut terhapus lewat `on delete cascade`. Function menolak request tanpa sesi (401), tanpa konfirmasi (400) dan selain POST (405). Diuji `npm run test:functions`, juga di CI.
+  - Rencana ujian disimpan dengan ID dari app dan upsert per kolom, sehingga dua perubahan cepat sebelum rencana ada tidak membuat dua baris.
+  - Disederhanakan dari desain 13: pilihan diletakkan langsung di kartu (bukan halaman detail), target band 5.5–8.0 supaya muat satu baris di HP 375pt, kartu "AI checks today" menunggu kuota AI, dan Sync hanya berupa catatan sampai antrean offline ada. Belum ada tautan kebijakan privasi.
+- **Belum:** antrean offline `expo-sqlite` (penulisan masih langsung ke Supabase, tapi ID dibuat app sehingga aman diulang), contoh jawaban band 7–8 (menunggu dicek manual), tab AI, kartu dari kesalahan AI, penjelasan bahasa Indonesia di kartu, skor tes resmi Listening/Reading, dan pilihan rentang waktu di Progress.
 - **Seed** berisi tiga soal Task 2 karangan sendiri untuk pengembangan lokal.
