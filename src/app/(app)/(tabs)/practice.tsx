@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
+import { FadeUp } from '@/components/motion';
 import { type RecentWritingAttempt, useRecentWritingAttempts } from '@/data/writing';
 import { borderWidth, colors, gutter, radius, tabularNums, textStyles, touchTarget } from '@/theme';
 
@@ -27,20 +28,20 @@ export default function PracticeScreen(): ReactElement {
             Practice
           </Text>
 
-          <View style={styles.card}>
+          <FadeUp index={0} style={styles.card}>
             <Text style={styles.cardTitle}>Writing Task 2</Text>
             <Text style={styles.body}>
               40 minutes, at least 250 words, spell-check off. Check it yourself afterwards.
             </Text>
             <Button label="Write a Task 2 essay" onPress={() => router.push('/write')} />
-          </View>
+          </FadeUp>
 
-          <View style={styles.card}>
+          <FadeUp index={1} style={styles.card}>
             <Text style={styles.cardTitle}>Speaking Part 2</Text>
             <Text style={styles.body}>
               A cue card, one minute to prepare and up to two minutes of recording. Coming soon.
             </Text>
-          </View>
+          </FadeUp>
 
           <Text accessibilityRole="header" style={styles.section}>
             Your recent essays

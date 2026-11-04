@@ -6,6 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BarRow } from '@/components/bar-row';
+import { FadeUp } from '@/components/motion';
 import { Button } from '@/components/button';
 import { LineChart } from '@/components/line-chart';
 import { useMistakes, useTargetBand, useWritingStats } from '@/data/progress';
@@ -67,6 +68,7 @@ export default function ProgressScreen(): ReactElement {
               fraction={(writingBand ?? 0) / 9}
               target={targetBand / 9}
               kind="self-check"
+              index={0}
             >
               <Text style={styles.caption}>
                 {writingBand === null
@@ -91,7 +93,7 @@ export default function ProgressScreen(): ReactElement {
             </View>
           </View>
 
-          <View style={styles.section}>
+          <FadeUp index={1} style={styles.section}>
             <Text accessibilityRole="header" style={styles.sectionTitle}>
               Errors per 100 words
             </Text>
@@ -105,9 +107,9 @@ export default function ProgressScreen(): ReactElement {
                 endLabel="Latest"
               />
             ) : null}
-          </View>
+          </FadeUp>
 
-          <View style={styles.section}>
+          <FadeUp index={2} style={styles.section}>
             <Text accessibilityRole="header" style={styles.sectionTitle}>
               {mistakes.data && mistakes.data.length > 0
                 ? `${mistakes.data.length} mistake${mistakes.data.length === 1 ? '' : 's'}, by type`
@@ -118,7 +120,7 @@ export default function ProgressScreen(): ReactElement {
                 Mistakes you mark in a self-check are counted here and become review cards.
               </Text>
             ) : null}
-            {groups.map((group) => (
+            {groups.map((group, groupIndex) => (
               <Pressable
                 key={group.label}
                 accessibilityRole="button"
@@ -131,6 +133,7 @@ export default function ProgressScreen(): ReactElement {
                   title={group.label}
                   value={String(group.count)}
                   fraction={group.count / maxCount}
+                  index={groupIndex}
                 >
                   <Text style={styles.example}>
                     <Text style={styles.struck}>{group.latest.original}</Text>{' '}
@@ -146,7 +149,7 @@ export default function ProgressScreen(): ReactElement {
                 onPress={() => router.push('/mistakes')}
               />
             ) : null}
-          </View>
+          </FadeUp>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,8 +1,9 @@
 import type { ReactElement } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import { borderWidth, colors, textStyles, touchTarget } from '@/theme';
+import { MotionView, useEnterAnimation, useStateTransition } from '@/components/motion';
+import { borderWidth, colors, motion, textStyles, touchTarget } from '@/theme';
 
 type CheckboxProps = {
   label: string;
@@ -17,6 +18,8 @@ export function Checkbox({
   onChange,
   disabled = false,
 }: CheckboxProps): ReactElement {
+  const fill = useStateTransition(['backgroundColor', 'borderColor'], motion.press);
+
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -27,21 +30,28 @@ export function Checkbox({
       onPress={() => onChange(!checked)}
       style={styles.row}
     >
-      <View style={[styles.box, checked && styles.boxChecked]}>
-        {checked ? (
-          <Svg width={14} height={14} viewBox="0 0 14 14" fill="none">
-            <Path
-              d="M2.5 7.5l3 3 6-7"
-              stroke={colors.surface}
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </Svg>
-        ) : null}
-      </View>
+      <MotionView style={[styles.box, checked && styles.boxChecked, fill]}>
+        {checked ? <CheckMark /> : null}
+      </MotionView>
       <Text style={styles.label}>{label}</Text>
     </Pressable>
+  );
+}
+
+function CheckMark(): ReactElement {
+  const pop = useEnterAnimation('popIn', { duration: motion.state });
+  return (
+    <MotionView style={pop}>
+      <Svg width={14} height={14} viewBox="0 0 14 14" fill="none">
+        <Path
+          d="M2.5 7.5l3 3 6-7"
+          stroke={colors.surface}
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    </MotionView>
   );
 }
 

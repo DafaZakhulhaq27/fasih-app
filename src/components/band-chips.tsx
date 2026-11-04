@@ -1,6 +1,12 @@
 import type { ReactElement } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import {
+  MotionPressable,
+  MotionText,
+  usePressFeedback,
+  useStateTransition,
+} from '@/components/motion';
 import { borderWidth, colors, radius, tabularNums, textStyles, touchTarget } from '@/theme';
 
 type BandChipsProps = {
@@ -20,12 +26,17 @@ export function BandChips({
   onChange,
   disabled = false,
 }: BandChipsProps): ReactElement {
+  const press = usePressFeedback({ disabled });
+  // One transition list for fill and press: a later transitionProperty replaces an earlier one.
+  const fill = useStateTransition(['backgroundColor', 'borderColor', 'transform', 'opacity']);
+  const textFill = useStateTransition(['color']);
+
   return (
     <View accessibilityRole="radiogroup" accessibilityLabel={label} style={styles.row}>
       {options.map((band) => {
         const selected = band === value;
         return (
-          <Pressable
+          <MotionPressable
             key={band}
             accessibilityRole="radio"
             accessibilityLabel={`Band ${band.toFixed(1)}`}
@@ -33,10 +44,13 @@ export function BandChips({
             aria-disabled={disabled}
             disabled={disabled}
             onPress={() => onChange(band)}
-            style={[styles.chip, selected && styles.selected]}
+            dataSet={press.dataSet}
+            style={[styles.chip, selected && styles.selected, press.style, fill]}
           >
-            <Text style={[styles.text, selected && styles.selectedText]}>{band.toFixed(1)}</Text>
-          </Pressable>
+            <MotionText style={[styles.text, selected && styles.selectedText, textFill]}>
+              {band.toFixed(1)}
+            </MotionText>
+          </MotionPressable>
         );
       })}
     </View>

@@ -79,3 +79,14 @@ A blue-pencil exercise book. The paper is calm and ruled; the teacher's pencil i
 - Touch targets at least 44×44. Every input has a label; icon-only buttons have an accessible label.
 - Focus ring: 2px `pencil`.
 - Keep `start`/`end` instead of `left`/`right` so a right-to-left language can be added later.
+
+## Motion
+
+Added in code (`src/theme/motion.ts`, `src/components/motion.tsx`); the design files have no motion spec. Motion should feel like pen on paper: short, ease-out, never in the way.
+
+- Durations: press 120 ms, state change 200 ms, content arriving 320 ms with a 60 ms stagger, pen stroke 700 ms. Content rises 8pt as it fades in.
+- Animate transform, opacity and colors. Width only for small one-off reveals (the review progress bar, the wordmark stroke).
+- Where it is used: buttons and chips shrink to 0.97 while pressed; the segmented thumb slides; the active tab underline draws out; checkboxes pop their tick; Progress bars grow from the start edge; cards and sections fade up once when a screen first appears; a review card slides in from the end side and shakes on a wrong answer; on sign-in the wordmark stroke is written and the teacher's note arrives a beat after the card.
+- Nothing loops, nothing replays on re-render, and long lists (the Mistake Bank) do not animate per row.
+- Reduce Motion (system setting): no movement at all. Press feedback falls back to a dim, transitions become instant, arrival animations are skipped.
+- Implementation: on iOS and Android, Reanimated CSS animations and transitions on the UI thread; on the web, plain CSS through react-native-web (`motion.web.tsx`), so the web bundle does not carry Reanimated.

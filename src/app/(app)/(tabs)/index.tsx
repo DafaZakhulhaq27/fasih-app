@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/auth/session-provider';
 import { Button } from '@/components/button';
+import { FadeUp } from '@/components/motion';
 import { useExamPlan, useProfile } from '@/data/account';
 import { useTargetBand } from '@/data/progress';
 import { useDueCount } from '@/data/review';
@@ -142,7 +143,7 @@ function Entry({
   children: ReactNode;
 }): ReactElement {
   return (
-    <View style={[styles.entry, !last && styles.entryRule]}>
+    <FadeUp index={Number(number)} style={[styles.entry, !last && styles.entryRule]}>
       <Text style={styles.number}>{number}</Text>
       <View style={styles.entryBody}>
         <Text accessibilityRole="header" style={styles.entryTitle}>
@@ -150,7 +151,7 @@ function Entry({
         </Text>
         {children}
       </View>
-    </View>
+    </FadeUp>
   );
 }
 

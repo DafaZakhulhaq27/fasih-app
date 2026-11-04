@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession } from '@/auth/session-provider';
 import { BandChips } from '@/components/band-chips';
 import { Button } from '@/components/button';
+import { FadeUp } from '@/components/motion';
 import { ScreenHeader } from '@/components/screen-header';
 import { Segmented } from '@/components/segmented';
 import { TextField } from '@/components/text-field';
@@ -210,7 +211,7 @@ function AccountBody({ profile, plan }: { profile: Profile; plan: ExamPlan | nul
         </Row>
       </Section>
 
-      <Section title="CHECKING ANSWERS">
+      <Section title="CHECKING ANSWERS" index={1}>
         <Row title="Default check" hint="You can switch on every result.">
           <Segmented
             label="Default check"
@@ -251,7 +252,7 @@ function AccountBody({ profile, plan }: { profile: Profile; plan: ExamPlan | nul
         </Row>
       </Section>
 
-      <Section title="SYNC">
+      <Section title="SYNC" index={2}>
         <Text style={styles.body}>
           Changes save straight to your account when you are online. Saving while offline comes
           later.
@@ -260,7 +261,7 @@ function AccountBody({ profile, plan }: { profile: Profile; plan: ExamPlan | nul
 
       {profile.role === 'admin' ? <Invites /> : null}
 
-      <Section title="PRIVACY AND DATA">
+      <Section title="PRIVACY AND DATA" index={3}>
         <Text style={styles.body}>
           • When AI checks are on, answers go to Google&apos;s Gemini for feedback. On the free tier
           they may be used to improve its models.
@@ -296,7 +297,7 @@ function Invites(): ReactElement {
   }
 
   return (
-    <Section title="ADMIN">
+    <Section title="ADMIN" index={3}>
       <Text style={styles.rowTitle}>Invites{invites.data ? ` (${invites.data.length})` : ''}</Text>
       <Text style={styles.muted}>
         Only these emails can sign up. Invite friends in self-check mode until AI is on a paid tier.
@@ -415,14 +416,23 @@ function SignOutAndDelete(): ReactElement {
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }): ReactElement {
+function Section({
+  title,
+  index = 0,
+  children,
+}: {
+  title: string;
+  /** Order on the screen, for the arrival stagger. */
+  index?: number;
+  children: ReactNode;
+}): ReactElement {
   return (
-    <View style={styles.section}>
+    <FadeUp index={index} style={styles.section}>
       <Text accessibilityRole="header" style={styles.sectionTitle}>
         {title}
       </Text>
       {children}
-    </View>
+    </FadeUp>
   );
 }
 
